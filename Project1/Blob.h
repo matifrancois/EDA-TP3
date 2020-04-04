@@ -51,6 +51,8 @@ private:
 };
 
 
+/*Funciones*/
+
 
 
 #endif // !BLOB_H_

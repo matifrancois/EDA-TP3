@@ -4,6 +4,9 @@
 
 Food::Food()
 {
+	foodx = 0.0;
+	foody = 0.0;
+	foodRadius = FOODRADIUS;
 }
 
 
@@ -15,6 +18,7 @@ Food::Food(double posx, double posy)
 {
 	foodx = posx;
 	foody = posy;
+	foodRadius = FOODRADIUS;
 }
 
 
