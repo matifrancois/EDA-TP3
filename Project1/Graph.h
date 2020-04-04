@@ -13,6 +13,13 @@ class Graph
 public:
     Graph()
     {
+        Death[0] = PROBABILIDAD_MUERTE_BABY;
+        Death[1] = PROBABILIDAD_MUERTE_GROWN;
+        Death[2] = PROBABILIDAD_MUERTE_OLD;
+        velp = PORCENTAJE_INICIAL_VEL;
+        smellRadius = SMELLRADIUS_INICIAL;
+        foodCount = FOOD_COUNT_INICIAL;
+        dir = DIR_INICIAL;
         display_principal = NULL;
         queue = NULL;
         close_display = false;
@@ -30,6 +37,12 @@ private:
     bool close_display;
     //con estos se controla el abrir o cerrar una ventana y el checkbox si esta o no marcado
     bool show_demo_window;
+    float Death[3];
+    float velp;
+    float smellRadius;
+    int foodCount;
+    float dir;
+
     bool show_another_window;
     ImVec4 clear_color;  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
     bool running;

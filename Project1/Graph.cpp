@@ -117,14 +117,7 @@ int Graph::inicializa(void)
 
 void Graph::VentanaPrincipal(void)
 {
-    static float Death[3] = { PROBABILIDAD_MUERTE_BABY, PROBABILIDAD_MUERTE_GROWN, PROBABILIDAD_MUERTE_OLD };
-    static float velp = PORCENTAJE_INICIAL_VEL;
-    static float smellRadius = SMELLRADIUS_INICIAL;
-    static int foodCount = FOOD_COUNT_INICIAL;
-    static float dir = DIR_INICIAL;
-
-    ImGui::Begin("Parametros");                          // Create a window called "Hello, world!" and append into it.
-
+    ImGui::Begin("Parametros");                          // Create a window called "Hello, world!" and append into it
     ImGui::Text("Inserte Vel Porcentual ");               
     ImGui::SliderFloat("%", &velp, 0.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     ImGui::Text("SmellRadius");
