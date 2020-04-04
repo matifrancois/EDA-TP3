@@ -127,6 +127,7 @@
     <ClInclude Include="Blob.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="GoodOldBlob.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="GrownBlob.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
@@ -143,6 +144,7 @@
     <ClCompile Include="Blob.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="GoodOldBlob.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GrownBlob.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -153,6 +155,7 @@
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="prototype.cpp" />
+    <ClCompile Include="main2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

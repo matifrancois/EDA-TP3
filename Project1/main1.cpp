@@ -7,7 +7,7 @@
 #include "imgui.h"
 #include "imgui_impl_allegro5.h"
 
-int main(int, char**)
+/*int main(int, char**)
 {
     // Setup Allegro
     al_init();
@@ -132,4 +132,4 @@ int main(int, char**)
     al_destroy_display(display);
 
     return 0;
-}
+}*/
