@@ -70,6 +70,7 @@ int Graph::grafica(void)
         // Start the Dear ImGui frame
         ImGui_ImplAllegro5_NewFrame();
         ImGui::NewFrame();
+        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 
 
         //Esta funcion se encarga de generar la parte de los botones de la gui
@@ -129,12 +130,12 @@ void Graph::VentanaPrincipal(void)
     ImGui::SliderFloat3("", Death, 0.0f, 1.0f);
     Pregunta("Cada valor corresponde a la probabilidad de muerte de cada grupo etario en el orden: BabyBlob, GrownBlob, GoodOldBlob");
     ImGui::Text("Cantidad de Comida %");
-    if (ImGui::Button("Aumentar"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        foodCount++;
-    ImGui::SameLine();
     if (ImGui::Button("Disminuir"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
         if(foodCount>0)
             foodCount--;
+    ImGui::SameLine();
+    if (ImGui::Button("Aumentar"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+        foodCount++;
     ImGui::SameLine();
     ImGui::Text("Cantidad = %d", foodCount);
     Pregunta("Cantidad de comida que sera visible en pantalla y podran atrapar los Blobs");
