@@ -2,7 +2,7 @@
 int Graph::grafica(void)
 {
     // Setup Allegro
-    if (!inicializa())
+    if (inicializa())
     {
         printf("Error de inicializacion \n");
         return -1;
@@ -113,6 +113,7 @@ int Graph::inicializa(void)
         fprintf(stderr, " failed to initialize the primitives !\n");
         return -1;
     }
+    return 0;
 }
 
 
