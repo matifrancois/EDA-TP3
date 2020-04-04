@@ -131,6 +131,7 @@
     <ClCompile Include="GrownBlob.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="prototype.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

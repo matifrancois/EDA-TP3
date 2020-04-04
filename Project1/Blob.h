@@ -7,7 +7,6 @@ INCLUDE
 **********************************/
 #include "prototype.h"
 
-
 /**********************************
 CLASS
 **********************************/
@@ -25,7 +24,8 @@ public:
 	double getNewy(void);
 	double getSpeed(void);
 	double getDir(void);
-	double getNewdir();
+	double getNewdir(void);
+	double getRadius(void);
 
 	/*Setters*/
 	void setX(double a);

@@ -27,6 +27,9 @@
     <ClInclude Include="Simulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="BabyBlob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -34,9 +37,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GoodOldBlob.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="prototype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,6 +50,12 @@
     <ClCompile Include="Simulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="prototype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="BabyBlob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,9 +63,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GoodOldBlob.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

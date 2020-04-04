@@ -67,9 +67,14 @@ double Blob::getDir(void)
 	return dir;
 }
 
-double Blob::getNewdir()
+double Blob::getNewdir(void)
 {
 	return newdir;
+}
+
+double Blob::getRadius(void)
+{
+	return radius;
 }
 
 
