@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 #include "imgui.h"
 #include "imgui_impl_allegro5.h"
 #include "prototype.h"
@@ -29,9 +30,16 @@ public:
         running = true;
     }
     int grafica(void);
+    void printBlobs(void);
 private:
     int inicializa(void);
     ALLEGRO_DISPLAY* display_principal;
+
+    ALLEGRO_BITMAP* background;
+    ALLEGRO_BITMAP* babyBlob;
+    ALLEGRO_BITMAP* food;
+    ALLEGRO_BITMAP* grownBlob;
+    ALLEGRO_BITMAP* goodOldBlob;
     //crea el evento
     ALLEGRO_EVENT_QUEUE* queue;
     bool close_display;

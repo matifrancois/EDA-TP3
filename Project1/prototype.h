@@ -20,7 +20,8 @@ DEFINE
 #define PORCENTAJE_INICIAL_VEL 50.0f
 #define SMELLRADIUS_INICIAL 5.0f
 #define DIR_INICIAL 0.0f
-
+#define BACKG_Y  250.0f
+#define BACKG_X 0.0f
 
 
 

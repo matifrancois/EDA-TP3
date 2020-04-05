@@ -19,7 +19,34 @@ int Graph::grafica(void)
     al_set_window_title(display_principal, "Dear ImGui"); 
     al_set_new_display_flags(ALLEGRO_RESIZABLE);
 
-    
+    //creo los bitmap
+    background = al_load_bitmap("background.jpg");
+    if (!background) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    babyBlob = al_load_bitmap("babyblob.png");
+    if (!babyBlob) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    goodOldBlob = al_load_bitmap("goodoldblob.png");
+    if (!goodOldBlob) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    grownBlob = al_load_bitmap("grownblob.png");
+    if (!grownBlob) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    food = al_load_bitmap("food.png");
+    if (!food) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+
+
     //cola de eventos
     queue = al_create_event_queue();
     // Controla que la cola de eventos se haya generado
@@ -49,10 +76,11 @@ int Graph::grafica(void)
 
 
     ImGui_ImplAllegro5_Init(display_principal);
-
-
+   
+  
 
     // Main loop
+   
     while (running)
     {
         while (al_get_next_event(queue, &ev))
@@ -76,9 +104,14 @@ int Graph::grafica(void)
         //Esta funcion se encarga de generar la parte de los botones de la gui
         VentanaPrincipal();
 
+        
+
         // Rendering
         ImGui::Render();
-        al_clear_to_color(al_map_rgba_f(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
+        al_clear_to_color(al_map_rgba_f(clear_color.x, clear_color.y, clear_color.z, clear_color.w));   //no hago al_clear asi puedo dibujar 
+        
+        Graph::printBlobs();     //funcion que dibuja blobs,back y comida
+
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
         al_flip_display();
     }
@@ -88,6 +121,17 @@ int Graph::grafica(void)
     return 0;
 }
 
+void Graph::printBlobs(void) {
+
+    if (background)
+    {
+        al_draw_scaled_bitmap(background, 0.0f, 0.0f, al_get_bitmap_width(background), al_get_bitmap_height(background), BACKG_X, BACKG_Y, TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y - BACKG_Y, 0);
+    }
+
+
+
+
+}
 
 int Graph::inicializa(void)
 {
@@ -111,6 +155,11 @@ int Graph::inicializa(void)
     if (!al_init_primitives_addon())
     {
         fprintf(stderr, " failed to initialize the primitives !\n");
+        return -1;
+    }
+    if (!al_init_image_addon()) {
+       
+        fprintf(stderr, " failed to initialize the imageaddon !\n");
         return -1;
     }
     return 0;
@@ -156,6 +205,7 @@ void Graph::clean(void)
     ImGui::DestroyContext();
     al_destroy_event_queue(queue);
     al_destroy_display(display_principal);
+    al_shutdown_image_addon();
 }
 
 void Graph::Pregunta(char* texto_ingresado)
