@@ -8,6 +8,7 @@
 #include "imgui.h"
 #include "imgui_impl_allegro5.h"
 #include "prototype.h"
+#include <string>
 
 class Graph
 {
@@ -28,12 +29,17 @@ public:
         show_another_window = false;
         clear_color = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
         running = true;
+        running_inicio = true;
+        cerrar = false;
     }
     int grafica(void);
     void printBlobs(void);
+    int get_info(void);
+    bool cerrar;
 private:
     int inicializa(void);
     ALLEGRO_DISPLAY* display_principal;
+    ALLEGRO_DISPLAY* display_entrada;
 
     ALLEGRO_BITMAP* background;
     ALLEGRO_BITMAP* babyBlob;
@@ -50,13 +56,18 @@ private:
     float smellRadius;
     int foodCount;
     float dir;
+    int modo;
+    float Vel_max;
+    int cant_inicial_blobs;
 
     bool show_another_window;
     ImVec4 clear_color;  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
     bool running;
+    bool running_inicio;
     ALLEGRO_EVENT ev;
     void VentanaPrincipal(void);
     void Pregunta(char* texto_ingresado);
-    void clean(void);
+    void clean(ALLEGRO_DISPLAY* ventana_a_borrar);
+    int Ventanainicio(void);
 };
 
