@@ -101,6 +101,7 @@ int Graph::grafica(void)
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 
 
+
         //Esta funcion se encarga de generar la parte de los botones de la gui
         VentanaPrincipal();
 
@@ -168,7 +169,7 @@ int Graph::inicializa(void)
 
 void Graph::VentanaPrincipal(void)
 {
-    ImGui::Begin("Parametros");                          // Create a window called "Hello, world!" and append into it
+    ImGui::Begin("Parametros",NULL, ImGuiWindowFlags_NoCollapse);                          // Create a window called "Hello, world!" and append into it
     ImGui::Text("Inserte Vel Porcentual ");               
     ImGui::SliderFloat("%", &velp, 0.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     ImGui::Text("SmellRadius");

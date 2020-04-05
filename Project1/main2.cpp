@@ -7,6 +7,7 @@
 #include "imgui.h"
 #include "imgui_impl_allegro5.h"
 
+
 int main(void)
 {
 	Graph grafico;
