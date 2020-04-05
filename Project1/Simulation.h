@@ -36,7 +36,7 @@ public:
 	void blobBirth(void);	//crea nuevos blobs.
 	void clearBlob(int i);	//elimina a un blob del arreglo de blobs y luego ajusta el arreglo acorde a la eliminación, de forma que blobNum siempre apunte al primer lugar libre para crear un blob.
 	void blobMerge(void);	//revisa si hay blobs que se deban mezclar.
-	void blobDivide(int totalMerges);	//crea al nuevo blob por división y elimina al padre
+	void blobDivide(void);	//crea al nuevo blob por división y elimina al padre
 
 
 	Blob *blobPtr[MAXBLOBS];	//contiene los punteros a los distintos blobs en el tablero.

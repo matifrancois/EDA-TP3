@@ -108,9 +108,7 @@ void Simulation::clearBlob(int i)
 void Simulation::blobMerge(void)
 {
 	double distance;
-	int totalMerges = 0;	//cantidad total de merges para luego ajustar la cantidad de blobs
-	int merges = 0;			//cantidad de merges para luego calcular el promedio de la dirección y velocidad.
-	int newcode = 0;
+	int totalMerges = 0;			//cantidad de merges para luego calcular el promedio de la dirección y velocidad.
 	for (int i = 0; i < blobNum; i++)
 	{
 		if (!((blobPtr[i]->getGroup()) == GOODOLDGROUP))		//revisa que el blob no sea uno de tipo GoodOldBlob.
@@ -125,31 +123,29 @@ void Simulation::blobMerge(void)
 						blobPtr[i]->setDir((blobPtr[i]->getDir()) + (blobPtr[j]->getDir()));	//la idea es agrupar los datos del nuevo Babyblob en blob[i] para luego generarlo.
 						blobPtr[i]->setMaxSpeed((blobPtr[i]->getMaxSpeed()) + (blobPtr[j]->getMaxSpeed()));	//se agrupan dirección, velocidad máxmima, y velocidad relativa.
 						blobPtr[i]->setAlphaSpeed((blobPtr[i]->getAlphaSpeed()) + (blobPtr[j]->getAlphaSpeed()));
-						merges++;
 						totalMerges++;
 						clearBlob(j);		//una vez que se recuperaron los datos del blob[j], como en la fusión desaparecen los involucrados, podemos eliminar a j ahora
 						j--;	//al haberse ajustado el arreglo en clearBlob (disminuyendo en 1 el total), es necesario reducir j en uno para continuar con el for correctamente.
 					}
 				}
 			}
-			if (merges > 0) //si hubo algún merge se calcula la dirección y velocidad del nuevo blob.
+			if (totalMerges > 0) //si hubo algún merge se calcula la dirección y velocidad del nuevo blob.
 			{
 				blobPtr[i]->setDir(((blobPtr[i]->getDir()) / totalMerges) + randomJiggleLimit);	//se genera la nueva dirección haciendo el promedio y luego sumándole randomJiggleLimit;
 				blobPtr[i]->setMaxSpeed((blobPtr[i]->getMaxSpeed()) / totalMerges);	//de forma análoga, se calcula la nueva velocidad máxima y relativa como el promedio de las anteriores.
 				blobPtr[i]->setAlphaSpeed((blobPtr[i]->getAlphaSpeed()) / totalMerges);
 				blobPtr[i]->setMergeStatus(true);	//se indica que este blob debe dividirse.
-				merges = 0;
+				totalMerges = 0;
 			}
 		}
 	}
-	blobDivide(totalMerges);	//genera las divisiones de blobs necesarias.
+	blobDivide();	//genera las divisiones de blobs necesarias.
 }
 
-void Simulation::blobDivide(int totalMerges)
+void Simulation::blobDivide(void)
 {
 	double maxSpeed_;
 	double alphaSpeed_;
-	blobNum -= totalMerges;
 	for (int i = 0; i < blobNum; i++)
 	{
 		if (blobPtr[i]->getMergeStatus())	//se fija si es necesario crear un nuevo blob.
