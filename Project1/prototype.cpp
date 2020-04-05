@@ -26,6 +26,16 @@ double normalRand(void)
 	return rand() / (double)RAND_MAX;
 }
 
+double randBetweenReal(double a, double b)
+{
+	return normalRand()*(b - a) + a;
+}
+
+double randomDir(void)
+{
+	return (rand() % 360)*PI / 180;
+}
+
 void setSeed(void)
 {
 	srand((unsigned int)time(NULL));

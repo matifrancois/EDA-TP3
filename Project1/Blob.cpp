@@ -3,32 +3,32 @@
 /*Constructors*/
 Blob::Blob()
 {
-	x = 0.0;
-	y = 0.0;
-	newx = 0.0;
-	newy = 0.0;
-	dir = 0.0;
-	newdir = 0.0;
-	radius = 0.0;
-	speed = 0.0;
-	foodEaten = 0;
-	group = 0;
 }
 
 Blob::
-Blob(double posx, double posy, double direction, double sp, double rad)
+Blob(double maxX, double maxY, double maxSpeed_, double alphaSpeed_, double radius_, double deathProb_) //Constructor
 {
-	x = posx;
-	y = posy;
-	dir = direction;
-	radius = rad;
-	speed = sp;
+	x = randBetweenReal(maxX,maxY);
+	y = randBetweenReal(maxX,maxY);
+	dir = randomDir();
+	radius = radius_;
+	maxSpeed =maxSpeed_;
+	alphaSpeed = alphaSpeed_;
+	speed = maxSpeed_*alphaSpeed_;
 	newx = 0.0;
 	newy = 0.0;
 	newdir = 0.0;
 	foodEaten = 0;
 	group = 0;
 	colissionRadius = 0.0;
+	deathProb = deathProb_;
+	isFull = false;
+	willDie = false;
+	willMerge = false;
+}
+Blob::Blob(const Blob& copyBlob) //Constructor copiador
+{
+
 }
 
 /*Destructors*/
@@ -57,6 +57,16 @@ double Blob::getNewy(void)
 	return newy;
 }
 
+double Blob::getMaxSpeed(void)
+{
+	return maxSpeed;
+}
+
+double Blob::getAlphaSpeed(void)
+{
+	return alphaSpeed;
+}
+
 double Blob::getSpeed(void)
 {
 	return speed;
@@ -77,6 +87,46 @@ double Blob::getRadius(void)
 	return radius;
 }
 
+double Blob::getcolissionRadius(void)
+{
+	return colissionRadius;
+}
+
+double Blob::getDeathProb(void)
+{
+	return deathProb;
+}
+
+double Blob::getFoodEaten(void)
+{
+	return foodEaten;
+}
+
+double Blob::getMaxFood(void)
+{
+	return maxFood;
+}
+
+bool Blob::getFullness(void)
+{
+	return isFull;
+}
+
+bool Blob::getDeathStatus(void)
+{
+	return willDie;
+}
+
+bool Blob::getMergeStatus(void)
+{
+	return willMerge;
+}
+
+int Blob::getGroup(void)
+{
+	return group;
+}
+
 
 /*Setters*/
 
@@ -90,9 +140,14 @@ void Blob::setY(double b)
 	y = b;
 }
 
-void Blob::setSpeed(double v)
+void Blob::setMaxSpeed(double s)
 {
-	speed = v;
+	maxSpeed = s;
+}
+
+void Blob::setAlphaSpeed(double s)
+{
+	alphaSpeed = s;
 }
 
 void Blob::setDir(double k)
@@ -100,11 +155,40 @@ void Blob::setDir(double k)
 	dir = k;
 }
 
+void Blob::setNewDir(double d)
+{
+	newdir = d;
+}
 
+void Blob::setFoodEaten(int f)
+{
+	foodEaten = f;
+}
+
+void Blob::setFullness(bool x)
+{
+	isFull = x;
+}
+
+void Blob::setGroup(int g)
+{
+	group = g;
+}
+
+void Blob::setDeathStatus(bool d)
+{
+	willDie = d;
+}
+
+void Blob::setMergeStatus(bool s)
+{
+	willMerge = s;
+}
 
 /*Funciones*/
-void Blob::newPositions(double maxX, double maxY)
+void Blob::newPositions(double maxX, double maxY)	//actualiza las posiciones futuras en base a la nueva dirección
 {
+	double speed = maxSpeed*alphaSpeed;
 	double nx = x + speed*cos(newdir);
 	double ny = y + speed*sin(newdir);
 	if (nx >= maxX) 
@@ -127,10 +211,73 @@ void Blob::newPositions(double maxX, double maxY)
 	newy = ny;
 }
 
+bool Blob::blobFate(void)
+{
+	double unluckynum = normalRand();
+	if (unluckynum < getDeathProb())
+	{
+		return true;
+	}
+	else return false;
+}
+
+void Blob::moveBlob(void)
+{
+	x = newx;
+	y = newy;
+	dir = newdir;
+}
+
+void Blob::blobEat(Food **foodPtr, int foodNum)	//revisa si puede comer alguna comida.
+{
+	double distance;
+	for (int i = 0; i < foodNum; i++)
+	{
+		distance = getDistance(getX(), foodPtr[i]->getFoodPosX(), getY(), foodPtr[i]->getFoodPosY());
+		if (distance < (getcolissionRadius()) / 2)
+		{
+			foodEaten++;
+			foodPtr[i]->setFoodStatus(true);	//marca la comida como "comida" para su posterior recuperación.
+		}
+	}
+
+}
+
+bool Blob::isBlobFull(void)		//revisa si un blob superó su límite de comida.
+{
+	if (foodEaten >= maxFood)
+	{
+		foodEaten = 0;
+		return true;
+	}
+	else return false;
+}
 
 
+void Blob::check_for_food(Food **foodPtr, int foodNum)	//revisa si hay comida cerca y, si la hay, actualiza su posición.
+{
+	double closest_food = MAXDISTANCE;
+	double closest_x, closest_y;
 
-
-
-
-
+	for (int i = 0; i < foodNum; i++)
+	{
+		double food_distance = getDistance(getX(), foodPtr[i]->getFoodPosX(), getY(), foodPtr[i]->getFoodPosY());
+		if (food_distance < getRadius())
+		{
+			if (food_distance < closest_food)	
+			{
+				closest_food = food_distance;
+				closest_x = foodPtr[i]->getFoodPosX();
+				closest_y = foodPtr[i]->getFoodPosY();
+			}
+		}
+	}
+	if (closest_food < MAXDISTANCE)
+	{
+		double angle = atan2(closest_y - getY(), closest_x - getX());
+		if (angle < 0) { 
+			angle += PI; 
+		}
+		setNewDir(angle);	
+	}
+}
