@@ -42,7 +42,7 @@ public:
 	~Simulation();
 
 	/*Inicializar blobs y food*/
-	bool generateFood(int newFood);	//agrega la comida indicada por newFood al arreglo de comidas.
+	bool generateFood(int newFood);	//genera la cantidad de comida inicial
 	bool generateBlobs(int blobNum);	//genera los babyBlobs iniciales en posiciones aleatorias.
 
 	
@@ -59,7 +59,8 @@ public:
 	void blobDivide(void);	//crea al nuevo blob por división y elimina al padre
 
 
-	/*Elimina comida*/
+	/*Agrega y elimina comida*/
+	void addFood(int newFood);
 	void delFood(int total);
 
 	/*Inicia un ciclo de juego*/

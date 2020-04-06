@@ -177,7 +177,7 @@ void Simulation::clearBlob(int i)
 
 void Simulation::blobMerge(void)
 {
-	double distance;
+	double addRandom, distance;
 	int totalMerges = 0;			//cantidad de merges para luego calcular el promedio de la dirección y velocidad.
 	for (int i = 0; i < blobNum; i++)
 	{
@@ -201,7 +201,9 @@ void Simulation::blobMerge(void)
 			}
 			if (totalMerges > 0) //si hubo algún merge se calcula la dirección y velocidad del nuevo blob.
 			{
-				blobPtr[i]->setDir(((blobPtr[i]->getDir()) / totalMerges) + randomJiggleLimit);	//se genera la nueva dirección haciendo el promedio y luego sumándole randomJiggleLimit;
+				addRandom = randBetweenReal(0.0, randomJiggleLimit);	//genero el ángulo aleatorio con JiggleLimit
+				addRandom = ((addRandom*PI) / 180);						//lo convierto a radianes.
+				blobPtr[i]->setDir(((blobPtr[i]->getDir()) / totalMerges) + addRandom);	//se genera la nueva dirección haciendo el promedio y luego sumándole randomJiggleLimit;
 				blobPtr[i]->setMaxSpeed((blobPtr[i]->getMaxSpeed()) / totalMerges);	//de forma análoga, se calcula la nueva velocidad máxima y relativa como el promedio de las anteriores.
 				blobPtr[i]->setAlphaSpeed((blobPtr[i]->getAlphaSpeed()) / totalMerges);
 				blobPtr[i]->setMergeStatus(true);	//se indica que este blob debe dividirse.
@@ -250,6 +252,15 @@ void Simulation::blobDivide(void)
 }
 
 
+
+void Simulation::addFood(int newFood)
+{
+	for (int i = 0; i < newFood; i++)
+	{
+		foodPtr[(foodNum + i)] = new Food(maxX, maxY);
+	}
+	foodNum += newFood;
+}
 
 void Simulation::delFood(int total)
 {	
