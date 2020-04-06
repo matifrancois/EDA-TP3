@@ -8,8 +8,8 @@ Blob::Blob()
 Blob::
 Blob(double maxX, double maxY, double maxSpeed_, double alphaSpeed_, double radius_, double deathProb_) //Constructor
 {
-	x = randBetweenReal(0.0,maxX);
-	y = randBetweenReal(0.0,maxY)+250.0;
+	x = randBetweenReal(0,maxX);
+	y = randBetweenReal(MIN_PRINTABLE_POIN_Y,maxY);
 	dir = randomDir();
 	radius = radius_;
 	maxSpeed =maxSpeed_;
