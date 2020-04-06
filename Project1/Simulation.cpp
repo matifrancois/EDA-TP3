@@ -38,6 +38,7 @@ bool Simulation::generateFood(int newFood)
 
 bool Simulation::generateBlobs(int blobNum)
 {
+	int random;
 	bool result = true;
 	double maxSpeed_;
 	for (int i = 0; i < blobNum; i++)
@@ -48,7 +49,19 @@ bool Simulation::generateBlobs(int blobNum)
 		else {
 			maxSpeed_ = randBetweenReal(0.0, maxSpeed);
 		}
-		blobPtr[i] = new (nothrow) BabyBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, babyDeathProb);
+		
+		random = rand() % 3 + 1;
+		switch (random) {
+
+		case 1:blobPtr[i] = new (nothrow) BabyBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, babyDeathProb);
+			break;
+
+		case 2:blobPtr[i] = new (nothrow) GrownBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, grownDeathProb);
+			break;
+		case 3:blobPtr[i] = new (nothrow) GoodOldBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, goodDeathProb);
+			break;
+		}
+		
 		if (blobPtr[i] == nullptr)
 		{
 			result = false;
@@ -253,10 +266,10 @@ void Simulation::gameLoop(void)	//Ciclo de juego
 {
 	int i = 0;
 	//Revisa si algún blob debe morir por el fenómeno de blobDeath
-	blobDeath();	
+	//blobDeath();	
 
 	//Cada blob busca la comida más cercana y actualiza su dirección, pero No se mueve.
-	for (i = 0; i < blobNum; i++)	
+	for (i = 0; i < blobNum; i++)
 	{
 		blobPtr[i]->check_for_food(foodPtr, foodNum);
 	}
@@ -287,6 +300,11 @@ void Simulation::gameLoop(void)	//Ciclo de juego
 
 	//Revisa si hay colisiones de blobs
 	blobMerge();
+	
+	for (i = 0; i < blobNum; i++)
+	{
+		blobPtr[i]->moveBlob();
+	}
 
 }
 

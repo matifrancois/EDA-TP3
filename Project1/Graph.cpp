@@ -225,10 +225,11 @@ int Graph::grafica(Simulation& mysim)
         al_clear_to_color(al_map_rgba_f(clear_color.x, clear_color.y, clear_color.z, clear_color.w));   //no hago al_clear asi puedo dibujar 
         
         mysim.tick++;
-       // mysim.getData(*(this));                           //fijate que una de estas funciones hace q los blobs desaparezcan
-       // mysim.gameLoop();
-        Graph::printBlobs(mysim);     //funcion que dibuja blobs,back y comida
+        mysim.getData(*(this));                           //fijate que una de estas funciones hace q los blobs desaparezcan
+        mysim.gameLoop();
         
+        Graph::printBlobs(mysim);     //funcion que dibuja blobs,back y comida
+
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
         al_flip_display();
     }
@@ -240,18 +241,18 @@ int Graph::grafica(Simulation& mysim)
 
 void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a food con distintas posiciones
 
-   
+
 
     al_draw_scaled_bitmap(background, 0.0f, 0.0f, al_get_bitmap_width(background), al_get_bitmap_height(background), BACKG_X, BACKG_Y, TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y - BACKG_Y, 0);
-   
+
     int i;
-    
-    float posX, posY;
-    
+
+    double posX, posY;
 
 
-    for (i = 0; i < mysim.blobNum ; i++) {
-        
+
+    for (i = 0; i < mysim.blobNum; i++) {
+
         posX = mysim.blobPtr[i]->getX();
         posY = mysim.blobPtr[i]->getY();
         posX > TAMANIO_PANTALLA_X ? posX = 0.0f : posX = posX;
@@ -265,7 +266,7 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
         switch (mysim.blobPtr[i]->getGroup()) {
 
         case BABYGROUP: al_draw_bitmap(babyBlob, posX, posY, 0);
-            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(babyBlob)) || posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(babyBlob))) {
+            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(babyBlob)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(babyBlob))) {
 
                 al_draw_bitmap_region(babyBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(babyBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(babyBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
 
@@ -283,12 +284,19 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
             break;
 
         case GROWNGROUP:al_draw_bitmap(grownBlob, posX, posY, 0);
-            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(grownBlob))) {
+            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(grownBlob)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(grownBlob))) {
+
+
+                al_draw_bitmap_region(grownBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(grownBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(grownBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+
+
+            }
+            else if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(grownBlob))) {
 
                 al_draw_bitmap_region(grownBlob, (TAMANIO_PANTALLA_X - posX), 0.0f, al_get_bitmap_width(grownBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(grownBlob), 0.0f, posY, 0);
 
             }
-            if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(grownBlob))) {
+            else if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(grownBlob))) {
 
                 al_draw_bitmap_region(grownBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(grownBlob), al_get_bitmap_height(grownBlob) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
 
@@ -296,7 +304,7 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
             break;
 
         case GOODOLDGROUP:al_draw_bitmap(goodOldBlob, posX, posY, 0);
-            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(goodOldBlob)) || posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(goodOldBlob))) {
+            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(goodOldBlob)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(goodOldBlob))) {
 
                 al_draw_bitmap_region(goodOldBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(goodOldBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(goodOldBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
 
@@ -320,7 +328,29 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
 
 
     }
-   
+    for (i = 0; i < mysim.foodNum; i++)
+    {
+        posX = mysim.foodPtr[i]->getFoodPosX();
+        posY = mysim.foodPtr[i]->getFoodPosY();
+       
+        al_draw_bitmap(food, posX, posY, 0);
+        if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(food)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(food))) {
+
+            al_draw_bitmap_region(food,(TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(food) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(food) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+
+        }
+        else if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(food))) {
+
+            al_draw_bitmap_region((food), (TAMANIO_PANTALLA_X - posX), 0.0f, al_get_bitmap_width(food) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(food), 0.0f, posY, 0);
+
+        }
+        else if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(food))) {
+
+            al_draw_bitmap_region(food, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(food), al_get_bitmap_height(food) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
+
+        }
+        
+    }
 
 
 }

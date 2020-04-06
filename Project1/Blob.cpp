@@ -19,7 +19,7 @@ Blob(double maxX, double maxY, double maxSpeed_, double alphaSpeed_, double radi
 	newy = 0.0;
 	newdir = 0.0;
 	foodEaten = 0;
-	group = 0;
+	group = 1;
 	colissionRadius = 0.0;
 	deathProb = deathProb_;
 	isFull = false;
@@ -194,6 +194,8 @@ void Blob::setMergeStatus(bool s)
 void Blob::newPositions(double maxX, double maxY)	//actualiza las posiciones futuras en base a la nueva dirección
 {
 	double speed = maxSpeed*alphaSpeed;
+	double ndir = rand() % 360;
+	
 	double nx = x + speed*cos(newdir);
 	double ny = y + speed*sin(newdir);
 	if (nx >= maxX) 
