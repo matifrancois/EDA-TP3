@@ -9,30 +9,13 @@
 #include "imgui_impl_allegro5.h"
 #include "prototype.h"
 #include <string>
-#include "Simulation.h"
+class Simulation;
 
 class Graph
 {
 public:
-    Graph()
-    {
-        Death[0] = PROBABILIDAD_MUERTE_BABY;
-        Death[1] = PROBABILIDAD_MUERTE_GROWN;
-        Death[2] = PROBABILIDAD_MUERTE_OLD;
-        velp = PORCENTAJE_INICIAL_VEL;
-        smellRadius = SMELLRADIUS_INICIAL;
-        foodCount = FOOD_COUNT_INICIAL;
-        randomJiggleLimit = DIR_INICIAL;
-        display_principal = NULL;
-        queue = NULL;
-        close_display = false;
-        show_demo_window = false;
-        show_another_window = false;
-        clear_color = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
-        running = true;
-        running_inicio = true;
-        cerrar = false;
-    }
+
+    Graph();
     int grafica(Simulation& mysim);
     void printBlobs(Simulation& mysim);
     int get_info(void);

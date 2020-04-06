@@ -1,5 +1,5 @@
 #include "Simulation.h"
-
+#include "Graph.h"
 
 Simulation::Simulation()
 {

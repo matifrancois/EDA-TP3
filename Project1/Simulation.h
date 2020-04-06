@@ -8,7 +8,7 @@ INCLUDE
 #include "BabyBlob.h"
 #include "GrownBlob.h"
 #include "GoodOldBlob.h"
-#include "Graph.h"
+class Graph;
 
 /**********************************
 DEFINE

@@ -1,4 +1,25 @@
 #include "Graph.h"
+#include "simulation.h"
+
+Graph::Graph() {
+
+    Death[0] = PROBABILIDAD_MUERTE_BABY;
+    Death[1] = PROBABILIDAD_MUERTE_GROWN;
+    Death[2] = PROBABILIDAD_MUERTE_OLD;
+    velp = PORCENTAJE_INICIAL_VEL;
+    smellRadius = SMELLRADIUS_INICIAL;
+    foodCount = FOOD_COUNT_INICIAL;
+    randomJiggleLimit = DIR_INICIAL;
+    display_principal = NULL;
+    queue = NULL;
+    close_display = false;
+    show_demo_window = false;
+    show_another_window = false;
+    clear_color = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
+    running = true;
+    running_inicio = true;
+    cerrar = false;
+}
 
 int Graph::get_info(void)
 {
@@ -204,10 +225,10 @@ int Graph::grafica(Simulation& mysim)
         al_clear_to_color(al_map_rgba_f(clear_color.x, clear_color.y, clear_color.z, clear_color.w));   //no hago al_clear asi puedo dibujar 
         
         mysim.tick++;
-        mysim.getData(*(this));
-        mysim.gameLoop();
+       // mysim.getData(*(this));                           //fijate que una de estas funciones hace q los blobs desaparezcan
+       // mysim.gameLoop();
         Graph::printBlobs(mysim);     //funcion que dibuja blobs,back y comida
-
+        
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
         al_flip_display();
     }
@@ -236,7 +257,7 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
         posX > TAMANIO_PANTALLA_X ? posX = 0.0f : posX = posX;
         posX < 0 ? posX = TAMANIO_PANTALLA_X : posX = posX;
 
-        posY > TAMANIO_PANTALLA_Y ? posX = BACKG_Y : posY = posY;
+        posY > TAMANIO_PANTALLA_Y ? posY = BACKG_Y : posY = posY;
         posY < 250.0f ? posY = TAMANIO_PANTALLA_Y : posY = posY;
 
 
