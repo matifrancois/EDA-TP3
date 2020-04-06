@@ -185,7 +185,7 @@ void Simulation::blobMerge(void)
 					distance = getDistance(blobPtr[i]->getX(), blobPtr[j]->getX(), blobPtr[i]->getY(), blobPtr[j]->getY());
 					if (distance < ((blobPtr[i]->getcolissionRadius()) / 2.0))
 					{					
-						blobPtr[i]->setDir((blobPtr[i]->getDir()) + (blobPtr[j]->getDir()));	//la idea es agrupar los datos del nuevo Babyblob en blob[i] para luego generarlo.
+						blobPtr[i]->setDir((blobPtr[i]->getDir()) + (blobPtr[j]->getDir()));	//la idea es agrupar los datos del nuevo Blob en blob[i] para luego generarlo.
 						blobPtr[i]->setMaxSpeed((blobPtr[i]->getMaxSpeed()) + (blobPtr[j]->getMaxSpeed()));	//se agrupan dirección, velocidad máxmima, y velocidad relativa.
 						blobPtr[i]->setAlphaSpeed((blobPtr[i]->getAlphaSpeed()) + (blobPtr[j]->getAlphaSpeed()));
 						totalMerges++;
@@ -211,8 +211,7 @@ void Simulation::blobMerge(void)
 
 void Simulation::blobDivide(void)
 {
-	double maxSpeed_;
-	double alphaSpeed_;
+	double maxSpeed_, alphaSpeed_, dir_,  mergex, mergey;
 	for (int i = 0; i < blobNum; i++)
 	{
 		if (blobPtr[i]->getMergeStatus())	//se fija si es necesario crear un nuevo blob.
@@ -223,20 +222,24 @@ void Simulation::blobDivide(void)
 			else {
 				maxSpeed_ = randBetweenReal(0.0,blobPtr[i]->getMaxSpeed());
 			}
-			alphaSpeed_ = blobPtr[i]->getAlphaSpeed();
+			alphaSpeed_ = blobPtr[i]->getAlphaSpeed();	//recupero las características del Blob resultante.
+			dir_ = blobPtr[i]->getDir();
+			mergex = blobPtr[i]->getX();
+			mergey = blobPtr[i]->getY();
 
 			switch (blobPtr[i]->getGroup())	//según el grupo de blob, crea un grownblob o un goodoldblob
 			{
 			case BABYGROUP:
+
 				clearBlob(i);	//el blob que se divide es eliminado, y se agrega otro en la última posición del arreglo disponible.
 				i--;
-				blobPtr[blobNum] = new GrownBlob(maxX, maxY, maxSpeed_, alphaSpeed_, smellRadius, grownDeathProb);
+				blobPtr[blobNum] = new GrownBlob(mergex, mergey, maxSpeed_, alphaSpeed_, dir_, smellRadius, grownDeathProb);
 				blobNum++;
 				break;
 			case GROWNGROUP:
 				clearBlob(i);	//De forma similar si se trata de colisiones de GrownBlobs.
 				i--;
-				blobPtr[blobNum] = new GoodOldBlob(maxX, maxY, maxSpeed_, alphaSpeed_, smellRadius, grownDeathProb);
+				blobPtr[blobNum] = new GoodOldBlob(mergex, mergey, maxSpeed_, alphaSpeed_, dir_, smellRadius, grownDeathProb);
 				blobNum++;
 				break;
 			default:
@@ -271,8 +274,11 @@ void Simulation::delFood(int total)
 void Simulation::gameLoop(void)	//Ciclo de juego
 {
 	int i = 0;
-	//Revisa si algún blob debe morir por el fenómeno de blobDeath
-	//blobDeath();	
+	//Revisa si algún blob debe morir por el fenómeno de blobDeath (inicia en tick=5 para dar tiempo a formación de blobs)
+	if (tick >= 5)
+	{
+		blobDeath();
+	}	
 
 	//Cada blob busca la comida más cercana y actualiza su dirección, pero No se mueve.
 	for (i = 0; i < blobNum; i++)
@@ -284,6 +290,7 @@ void Simulation::gameLoop(void)	//Ciclo de juego
 	for (i = 0; i < blobNum; i++)
 	{
 		blobPtr[i]->newPositions(maxX, maxY);
+		blobPtr[i]->moveBlob();
 	}
 
 	//Se revisa cuáles blobs están en posición para comer comida.
@@ -298,6 +305,7 @@ void Simulation::gameLoop(void)	//Ciclo de juego
 		if ((foodPtr[i]->getFoodStatus()) == true)
 		{
 			foodPtr[i]->newFood(maxX, maxY);
+			foodPtr[i]->setFoodStatus(false);
 		}
 	}
 
@@ -306,11 +314,6 @@ void Simulation::gameLoop(void)	//Ciclo de juego
 
 	//Revisa si hay colisiones de blobs
 	blobMerge();
-	
-	for (i = 0; i < blobNum; i++)
-	{
-		blobPtr[i]->moveBlob();
-	}
 
 }
 

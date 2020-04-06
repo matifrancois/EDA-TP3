@@ -15,9 +15,28 @@ GrownBlob::GrownBlob(double maxX, double maxY, double maxSpeed_, double alphaSpe
 	group = GROWNGROUP;
 }
 
-GrownBlob::GrownBlob(Blob * blobCopy)
+GrownBlob::GrownBlob(double x_, double y_, double maxSpeed_, double alphaSpeed_, double dir_, double radius_, double deathProb_)
 {
+	x = x_;
+	y = y_;
+	newx = 0.0;
+	newy = 0.0;
+	maxSpeed = maxSpeed_;
+	alphaSpeed = alphaSpeed_;
+	dir = dir_;
+	maxFood = GROWNMAXFOOD;
+	speed = maxSpeed_*alphaSpeed_;
+	radius = radius_;
+	group = GROWNGROUP;
+	foodEaten = 0;
+	colissionRadius = GROWNRADIUS;
+	isFull = false;
+	willDie = false;
+	willMerge = false;
+	deathProb = deathProb_;
+
 }
+
 
 
 GrownBlob::~GrownBlob()

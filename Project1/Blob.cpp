@@ -244,7 +244,7 @@ void Blob::blobEat(Food **foodPtr, int foodNum)	//revisa si puede comer alguna c
 		if (distance < (getcolissionRadius()) / 2)
 		{
 			foodEaten++;
-			foodPtr[i]->setFoodStatus(true);	//marca la comida como "comida" para su posterior recuperación.
+			foodPtr[i]->setFoodStatus(true);	//marca el alimento como comida para luego reponerlo en otro lado.
 		}
 	}
 
