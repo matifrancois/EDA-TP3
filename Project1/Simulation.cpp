@@ -3,25 +3,20 @@
 
 Simulation::Simulation()
 {
+	maxX = WIDTH ;
+	maxY = HEIGHT;
+	foodNum = 0.0;
+	alphaSpeed = 0.0;
+	smellRadius = 0.0;
+	randomJiggleLimit = 0.0;
+	babyDeathProb = 0.0;
+	grownDeathProb =0.0 ;
+	goodDeathProb =0.0 ;
+	mode = 0;
+	blobNum = 0;
 }
 
-Simulation::Simulation(double maxX_, double maxY_, int blobNum_, int foodNum_, double maxSpeed_, double alphaSpeed_, 
-	double smellRadius_, double randomJiggleLimit_, double babyDeathProb_, double grownDeathProb_, double goodDeathProb_, int mode_)
-{
-	maxX = maxX_;
-	maxY = maxY_;
-	blobNum = blobNum_;
-	foodNum = foodNum_;
-	tick = 0;
-	maxSpeed = maxSpeed_;
-	alphaSpeed = alphaSpeed_;
-	smellRadius = smellRadius_;
-	randomJiggleLimit = randomJiggleLimit_;
-	babyDeathProb = babyDeathProb_;
-	grownDeathProb = grownDeathProb_;
-	goodDeathProb = goodDeathProb_;
-	mode = mode_;
-}
+
 
 Simulation::~Simulation()
 {
@@ -32,8 +27,8 @@ bool Simulation::generateFood(int newFood)
 	bool res = true;
 	for (int i = 0; i < newFood; i++)
 	{
-		foodPtr[(foodNum+i)] = new (nothrow) Food(maxX, maxY);
-		if (foodPtr[(foodNum+i)]==nullptr)
+		foodPtr[(i)] = new (nothrow) Food(maxX, maxY);
+		if (foodPtr[(i)]==nullptr)
 		{
 			res = false;
 		}
@@ -65,26 +60,26 @@ bool Simulation::generateBlobs(int blobNum)
 
 
 
-void Simulation::firstData(void)
+void Simulation::firstData(Graph& myGUI)
 {
-	simPtr->maxX = WIDTH;			//Se complete los valores iniciales en la simulación
-	simPtr->maxY = HEIGHT;
-	simPtr->mode = myGUI.getModo();
-	simPtr->blobNum = myGUI.getBlobNum();
-	simPtr->foodNum = myGUI.getFoodCount();
-	simPtr->maxSpeed = myGUI.getMaxSpeed();
-	simPtr->alphaSpeed = myGUI.getVelp();
-	simPtr->babyDeathProb = myGUI.getDead(0);
-	simPtr->grownDeathProb = myGUI.getDead(1);
-	simPtr->goodDeathProb = myGUI.getDead(2);
-	simPtr->smellRadius = myGUI.getSmellRadius();
-	simPtr->randomJiggleLimit = myGUI.getRJL();
+	maxX = TAMANIO_PANTALLA_X;			//Se complete los valores iniciales en la simulación
+	maxY =TAMANIO_PANTALLA_Y-BACKG_Y;
+	mode = myGUI.getModo();
+	blobNum = myGUI.getBlobNum();
+	foodNum = myGUI.getFoodCount();
+	maxSpeed = myGUI.getMaxSpeed();
+	alphaSpeed = myGUI.getVelp();
+	babyDeathProb = myGUI.getDead(0);
+	grownDeathProb = myGUI.getDead(1);
+	goodDeathProb = myGUI.getDead(2);
+	smellRadius = myGUI.getSmellRadius();
+	randomJiggleLimit = myGUI.getRJL();
 }
 
 
 
 
-void Simulation::getData(void)	//Recupera los datos que haya modificado el usuario.
+void Simulation::getData(Graph& myGUI)	//Recupera los datos que haya modificado el usuario.
 {
 	int newFood = 0;
 
@@ -281,7 +276,7 @@ void Simulation::gameLoop(void)	//Ciclo de juego
 	//Regenera la comida que haya sido consumida por los blobs en una posición aleatoria
 	for (i = 0; i < foodNum; i++)
 	{
-		if (foodPtr[i]->getFoodStatus == true)
+		if ((foodPtr[i]->getFoodStatus()) == true)
 		{
 			foodPtr[i]->newFood(maxX, maxY);
 		}

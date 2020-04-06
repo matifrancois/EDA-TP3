@@ -5,21 +5,23 @@ using namespace std;
 int main(void) {
 
 	srand(time(NULL));
-	Simulation *simPtr = new (throw) Simulation;	//se inicializa la simulación.
+	Simulation *simPtr = new Simulation;	//se inicializa la simulación.
 	if (!(simPtr == NULL))
 	{
 		Graph myGUI;	//Objeto que permitirá recuperar información de la GUI.
-		if (!(myGUI.getinfo()))
+		if (!(myGUI.get_info()))
 		{
-			simPtr->firstData();	//Recupero los primeros datos (necesarios para iniciar las cosas invariantes)
+
+			simPtr->firstData(myGUI);	//Recupero los primeros datos (necesarios para iniciar las cosas invariantes)
 			simPtr->generateBlobs(simPtr->blobNum);		//genero la cantidad de blobs iniciales
 			simPtr->generateFood(simPtr->foodNum);		//genero la cantidad de comida inicial.
 			
-			while (simPtr->blobNum && myGUI.isGameFinished())	//acá habría que hacer algún loop con alguna función de la GUI supongo pero no sé cómo.
+			while (simPtr->blobNum || 1)	//acá habría que hacer algún loop con alguna función de la GUI supongo pero no sé cómo./&& myGUI.isGameFinished()
 			{
-				simPtr->tick++;
-				simPtr->getData();
-				simPtr->gameLoop();
+				//simPtr->tick++;
+				//simPtr->getData(myGUI);
+				//simPtr->gameLoop();
+				myGUI.grafica(*(simPtr));
 			}
 
 

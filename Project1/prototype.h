@@ -6,8 +6,27 @@ DEFINE
 **********************************/
 #define MAXDISTANCE 2000
 #define PI 3.14159265359
-#define HEIGHT 470
-#define WIDTH 900
+#define HEIGHT 550
+#define WIDTH 1200
+
+#define FOODRADIUS 1
+#define BABYRADIUS 1
+#define GROWNRADIUS 2
+#define GOODOLDRADIUS 3
+#define TAMANIO_PANTALLA_X_ENTRADA 600
+#define TAMANIO_PANTALLA_Y_ENTRADA 400
+#define TAMANIO_PANTALLA_X 1200
+#define TAMANIO_PANTALLA_Y 800
+#define MAX_FOOD 1000
+#define FOOD_COUNT_INICIAL 5
+#define PROBABILIDAD_MUERTE_BABY 0.1f
+#define PROBABILIDAD_MUERTE_GROWN 0.2f
+#define PROBABILIDAD_MUERTE_OLD 0.3f
+#define PORCENTAJE_INICIAL_VEL 50.0f
+#define SMELLRADIUS_INICIAL 5.0f
+#define DIR_INICIAL 0.0f
+#define BACKG_Y  250.0f
+#define BACKG_X 0.0f
 
 typedef unsigned int uint;
 

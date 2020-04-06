@@ -91,7 +91,7 @@ int Graph::get_info(void)
 
 
 
-int Graph::grafica(void)
+int Graph::grafica(Simulation& mysim)
 {
     // Setup Allegro
     if (inicializa())
@@ -203,7 +203,10 @@ int Graph::grafica(void)
         ImGui::Render();
         al_clear_to_color(al_map_rgba_f(clear_color.x, clear_color.y, clear_color.z, clear_color.w));   //no hago al_clear asi puedo dibujar 
         
-        Graph::printBlobs();     //funcion que dibuja blobs,back y comida
+        mysim.tick++;
+        mysim.getData(*(this));
+        mysim.gameLoop();
+        Graph::printBlobs(mysim);     //funcion que dibuja blobs,back y comida
 
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
         al_flip_display();
@@ -214,14 +217,89 @@ int Graph::grafica(void)
     return 0;
 }
 
-void Graph::printBlobs(void) {
+void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a food con distintas posiciones
 
-    if (background)
-    {
-        al_draw_scaled_bitmap(background, 0.0f, 0.0f, al_get_bitmap_width(background), al_get_bitmap_height(background), BACKG_X, BACKG_Y, TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y - BACKG_Y, 0);
+   
+
+    al_draw_scaled_bitmap(background, 0.0f, 0.0f, al_get_bitmap_width(background), al_get_bitmap_height(background), BACKG_X, BACKG_Y, TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y - BACKG_Y, 0);
+   
+    int i;
+    
+    float posX, posY;
+    
+
+
+    for (i = 0; i < mysim.blobNum ; i++) {
+        
+        posX = mysim.blobPtr[i]->getX();
+        posY = mysim.blobPtr[i]->getY();
+        posX > TAMANIO_PANTALLA_X ? posX = 0.0f : posX = posX;
+        posX < 0 ? posX = TAMANIO_PANTALLA_X : posX = posX;
+
+        posY > TAMANIO_PANTALLA_Y ? posX = BACKG_Y : posY = posY;
+        posY < 250.0f ? posY = TAMANIO_PANTALLA_Y : posY = posY;
+
+
+
+        switch (mysim.blobPtr[i]->getGroup()) {
+
+        case BABYGROUP: al_draw_bitmap(babyBlob, posX, posY, 0);
+            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(babyBlob)) || posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(babyBlob))) {
+
+                al_draw_bitmap_region(babyBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(babyBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(babyBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+
+            }
+            else if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(babyBlob))) {
+
+                al_draw_bitmap_region(babyBlob, (TAMANIO_PANTALLA_X - posX), 0.0f, al_get_bitmap_width(babyBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(babyBlob), 0.0f, posY, 0);
+
+            }
+            else if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(babyBlob))) {
+
+                al_draw_bitmap_region(babyBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(babyBlob), al_get_bitmap_height(babyBlob) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
+
+            }
+            break;
+
+        case GROWNGROUP:al_draw_bitmap(grownBlob, posX, posY, 0);
+            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(grownBlob))) {
+
+                al_draw_bitmap_region(grownBlob, (TAMANIO_PANTALLA_X - posX), 0.0f, al_get_bitmap_width(grownBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(grownBlob), 0.0f, posY, 0);
+
+            }
+            if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(grownBlob))) {
+
+                al_draw_bitmap_region(grownBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(grownBlob), al_get_bitmap_height(grownBlob) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
+
+            }
+            break;
+
+        case GOODOLDGROUP:al_draw_bitmap(goodOldBlob, posX, posY, 0);
+            if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(goodOldBlob)) || posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(goodOldBlob))) {
+
+                al_draw_bitmap_region(goodOldBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(goodOldBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(goodOldBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+
+            }
+            else if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(goodOldBlob))) {
+
+                al_draw_bitmap_region(goodOldBlob, (TAMANIO_PANTALLA_X - posX), 0.0f, al_get_bitmap_width(goodOldBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(goodOldBlob), 0.0f, posY, 0);
+
+            }
+            else if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(goodOldBlob))) {
+
+                al_draw_bitmap_region(goodOldBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(goodOldBlob), al_get_bitmap_height(goodOldBlob) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
+
+            }
+            break;
+
+        }
+
+
+
+
+
     }
-
-
+   
 
 
 }
@@ -272,7 +350,7 @@ void Graph::VentanaPrincipal(void)
     ImGui::InputFloat("", &smellRadius, 0.01f, 1.0f, "%.3f");
     Pregunta("SmellRadius refiere a el radio en el cual el blob buscara su alimento, fuera de ese radio de deteccion no lo huele");
     ImGui::Text("RandomJiggleLimit");
-    ImGui::SliderFloat("°", &dir, 0.0f, 360.0f);
+    ImGui::SliderFloat("°", &randomJiggleLimit, 0.0f, 360.0f);
     Pregunta("Al chocar 2 o mas blobs del mismo grupo etario la direccion del blob resultante es la suma de las direcciones mas un valor aleatorio entre 0 y este valor introducido");
     ImGui::Text("Death %");
     ImGui::SliderFloat3("", Death, 0.0f, 1.0f);
@@ -365,4 +443,47 @@ int Graph::Ventanainicio(void)
     //
     //ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
+}int Graph:: getModo(void) {            //GETTERS
+
+    return modo;
+}
+int Graph::getBlobNum(void) {
+
+    return cant_inicial_blobs;
+}
+int Graph::getFoodCount(void) {
+
+    return foodCount;
+}
+float Graph:: getMaxSpeed(void) {
+    return Vel_max;
+}
+float Graph:: getVelp(void) {
+    return velp;
+}
+float Graph::getDead(int type) {
+
+    enum gruop{BABY,GROWN,GOODOLD};
+    float deadp;
+    switch (type) {
+         case BABY:
+                 deadp = Death[BABY];
+             break;
+         case GROWN:
+             deadp = Death[GROWN];
+             break;
+         case GOODOLD:
+             deadp = Death[GOODOLD];
+             break;
+
+    }
+    return deadp;
+    
+}
+
+float Graph::getSmellRadius(void) {
+    return smellRadius;
+}
+float Graph:: getRJL(void) {
+    return randomJiggleLimit;
 }

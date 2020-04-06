@@ -9,6 +9,7 @@
 #include "imgui_impl_allegro5.h"
 #include "prototype.h"
 #include <string>
+#include "Simulation.h"
 
 class Graph
 {
@@ -21,7 +22,7 @@ public:
         velp = PORCENTAJE_INICIAL_VEL;
         smellRadius = SMELLRADIUS_INICIAL;
         foodCount = FOOD_COUNT_INICIAL;
-        dir = DIR_INICIAL;
+        randomJiggleLimit = DIR_INICIAL;
         display_principal = NULL;
         queue = NULL;
         close_display = false;
@@ -32,10 +33,20 @@ public:
         running_inicio = true;
         cerrar = false;
     }
-    int grafica(void);
-    void printBlobs(void);
+    int grafica(Simulation& mysim);
+    void printBlobs(Simulation& mysim);
     int get_info(void);
     bool cerrar;
+    int getModo(void);
+    int getBlobNum(void);
+    int getFoodCount(void);
+    float getMaxSpeed(void);
+    float getVelp(void);
+    float getDead(int type);
+    
+    float getSmellRadius(void);
+    float getRJL(void);
+
 private:
     int inicializa(void);
     ALLEGRO_DISPLAY* display_principal;
@@ -55,7 +66,7 @@ private:
     float velp;
     float smellRadius;
     int foodCount;
-    float dir;
+    float randomJiggleLimit;
     int modo;
     float Vel_max;
     int cant_inicial_blobs;

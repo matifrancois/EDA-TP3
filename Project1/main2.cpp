@@ -8,7 +8,7 @@
 #include "imgui_impl_allegro5.h"
 
 
-int main(void)
+/*int main(void)
 {
 	Graph grafico;
 	if (grafico.get_info())
@@ -22,4 +22,4 @@ int main(void)
 	if(grafico.grafica())
 		printf("error de inicializacion\n");
 	return 0;
-}
+}*/

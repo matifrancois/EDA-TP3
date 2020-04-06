@@ -8,6 +8,7 @@ INCLUDE
 #include "BabyBlob.h"
 #include "GrownBlob.h"
 #include "GoodOldBlob.h"
+#include "Graph.h"
 
 /**********************************
 DEFINE
@@ -36,12 +37,7 @@ CLASS
 class Simulation
 {
 public:
-	Simulation();
-
-	Simulation(double maxX_=default_maxX, double maxY_=default_maxY, int blobNum_=default_blobNum, int foodNum_=default_foodNum, 
-		double maxSpeed_=default_maxSpeed, double alphaSpeed_=default_alphaSpeed, double smellRadius_=default_smellRadius, 
-		double randomJiggleLimit_=default_randomJiggleLimit, double babyDeathProb_=default_deathProb,  double grownDeathProb_=default_deathProb,
-		double goodDeathProb_=default_deathProb, int mode_=defaultMode); //Constructor de simulación inicial.
+	Simulation();   //Constructor de simulación inicial.
 	
 	~Simulation();
 
@@ -51,8 +47,8 @@ public:
 
 	
 	/*Completar y recuperar datos*/
-	void firstData(void);
-	void getData(void);
+	void firstData(Graph& myGUI);
+	void getData(Graph& myGUI);
 										
 										
 	/*Revisar nacimientos y muertes*/
@@ -69,7 +65,7 @@ public:
 	/*Inicia un ciclo de juego*/
 	void gameLoop(void);
 
-
+	
 	Blob *blobPtr[MAXBLOBS];	//contiene los punteros a los distintos blobs en el tablero.
 	Food *foodPtr[MAXFOOD];		//contiene los punteros a las distintas comidas en el juego.
 	int blobNum;
