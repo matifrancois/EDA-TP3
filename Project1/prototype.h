@@ -6,6 +6,8 @@ DEFINE
 **********************************/
 #define MAXDISTANCE 2000
 #define PI 3.14159265359
+#define HEIGHT 470
+#define WIDTH 900
 
 typedef unsigned int uint;
 
@@ -19,8 +21,8 @@ INCLUDE
 #include <cstdlib>
 #include <stdint.h>
 #include <cstdio>
-#include <string.h>
 #include <string>
+#include <stdarg.h>
 #include <cstring>
 #include <vector>
 #include <new>

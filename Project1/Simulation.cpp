@@ -27,18 +27,18 @@ Simulation::~Simulation()
 {
 }
 
-bool Simulation::generateFood(int foodNum)
+bool Simulation::generateFood(int newFood)
 {
-	bool result = true;
-	for (int i = 0; i < foodNum; i++)
+	bool res = true;
+	for (int i = 0; i < newFood; i++)
 	{
-		foodPtr[i] = new (nothrow) Food(maxX, maxY);
-		if (foodPtr[i]==nullptr)
+		foodPtr[(foodNum+i)] = new (nothrow) Food(maxX, maxY);
+		if (foodPtr[(foodNum+i)]==nullptr)
 		{
-			result = false;
+			res = false;
 		}
 	}
-	return result;
+	return res;
 }
 
 bool Simulation::generateBlobs(int blobNum)
@@ -61,6 +61,68 @@ bool Simulation::generateBlobs(int blobNum)
 	}
 	return result;
 }
+
+
+
+
+void Simulation::firstData(void)
+{
+	simPtr->maxX = WIDTH;			//Se complete los valores iniciales en la simulación
+	simPtr->maxY = HEIGHT;
+	simPtr->mode = myGUI.getModo();
+	simPtr->blobNum = myGUI.getBlobNum();
+	simPtr->foodNum = myGUI.getFoodCount();
+	simPtr->maxSpeed = myGUI.getMaxSpeed();
+	simPtr->alphaSpeed = myGUI.getVelp();
+	simPtr->babyDeathProb = myGUI.getDead(0);
+	simPtr->grownDeathProb = myGUI.getDead(1);
+	simPtr->goodDeathProb = myGUI.getDead(2);
+	simPtr->smellRadius = myGUI.getSmellRadius();
+	simPtr->randomJiggleLimit = myGUI.getRJL();
+}
+
+
+
+
+void Simulation::getData(void)	//Recupera los datos que haya modificado el usuario.
+{
+	int newFood = 0;
+
+	for (int i = 0; i < blobNum; i++)
+	{
+		if ((blobPtr[i]->getGroup()) == BABYGROUP)		//primero seteo la probabilidad de muerte según grupo etario.
+		{
+			blobPtr[i]->setDeathStatus(myGUI.getDead(0));
+		}
+
+		if ((blobPtr[i]->getGroup()) == GROWNGROUP)
+		{
+			blobPtr[i]->setDeathStatus(myGUI.getDead(1));
+		}
+
+		if ((blobPtr[i]->getGroup()) == GOODOLDGROUP)
+		{
+			blobPtr[i]->setDeathStatus(myGUI.getDead(2));
+		}
+
+		blobPtr[i]->setMaxSpeed(myGUI.getMaxSpeed());		//ajusto la velocidad máxima, la porcentual, y smellRadius
+		blobPtr[i]->setAlphaSpeed(myGUI.getVelp());
+		blobPtr[i]->setRadius(myGUI.getSmellRadius());
+	}
+
+	newFood = myGUI.getFoodCount();		//agrego o quito comida según corresponda.
+	if (newFood >= foodNum)
+	{
+		generateFood(newFood - foodNum);
+	}
+	if (newFood < foodNum)
+	{
+		delFood(foodNum - newFood);
+	}
+}
+
+
+
 
 void Simulation::blobDeath(void)
 {
@@ -177,5 +239,59 @@ void Simulation::blobDivide(void)
 			}
 		}
 	}
+}
+
+
+
+void Simulation::delFood(int total)
+{	
+		int remainder = foodNum - total;
+		for (int i = remainder; i < foodNum; i++) 
+		{
+			delete foodPtr[i];
+
+		}
+		foodNum = remainder;
+}
+
+void Simulation::gameLoop(void)	//Ciclo de juego
+{
+	int i = 0;
+	//Revisa si algún blob debe morir por el fenómeno de blobDeath
+	blobDeath();	
+
+	//Cada blob busca la comida más cercana y actualiza su dirección, pero No se mueve.
+	for (i = 0; i < blobNum; i++)	
+	{
+		blobPtr[i]->check_for_food(foodPtr, foodNum);
+	}
+
+	//Los blobs se mueven a su nueva posición
+	for (i = 0; i < blobNum; i++)
+	{
+		blobPtr[i]->newPositions(maxX, maxY);
+	}
+
+	//Se revisa cuáles blobs están en posición para comer comida.
+	for (i = 0; i < blobNum; i++)
+	{
+		blobPtr[i]->blobEat(foodPtr, foodNum);
+	}
+
+	//Regenera la comida que haya sido consumida por los blobs en una posición aleatoria
+	for (i = 0; i < foodNum; i++)
+	{
+		if (foodPtr[i]->getFoodStatus == true)
+		{
+			foodPtr[i]->newFood(maxX, maxY);
+		}
+	}
+
+	//Se revisa si hay instancias de blobBirth.
+	blobBirth();
+
+	//Revisa si hay colisiones de blobs
+	blobMerge();
+
 }
 

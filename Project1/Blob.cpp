@@ -140,6 +140,11 @@ void Blob::setY(double b)
 	y = b;
 }
 
+void Blob::setRadius(double r)
+{
+	radius = r;
+}
+
 void Blob::setMaxSpeed(double s)
 {
 	maxSpeed = s;

@@ -19,6 +19,7 @@ Food::Food(double maxX, double maxY)		//inicializa un objeto comida en una posic
 	foodx = randBetweenReal(maxX, maxY);
 	foody = randBetweenReal(maxX, maxY);
 	foodRadius = FOODRADIUS;
+	isFoodEaten = false;
 }
 
 

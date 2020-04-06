@@ -1,20 +1,42 @@
 #include "Simulation.h"
+#include "Graph.h"
 
 using namespace std;
 int main(void) {
-	cout << "hello world" << endl;
-	srand(time(NULL));
-	Food *foodPtr = new Food(5.0, 12.0);
-	cout << foodPtr->getFoodPosX() << endl;
-	cout << foodPtr->getFoodPosY() << endl;
-	Food *foodPtr2 = new Food(18.1, 22.0);
-	cout << foodPtr2->getFoodPosX() << endl;
-	cout << foodPtr2->getFoodPosY() << endl;
 
-	double x = -2;
-	double y = -3;
-	double arct = atan2(y, x);
-	cout << arct << endl;
+	srand(time(NULL));
+	Simulation *simPtr = new (throw) Simulation;	//se inicializa la simulación.
+	if (!(simPtr == NULL))
+	{
+		Graph myGUI;	//Objeto que permitirá recuperar información de la GUI.
+		if (!(myGUI.getinfo()))
+		{
+			simPtr->firstData();	//Recupero los primeros datos (necesarios para iniciar las cosas invariantes)
+			simPtr->generateBlobs(simPtr->blobNum);		//genero la cantidad de blobs iniciales
+			simPtr->generateFood(simPtr->foodNum);		//genero la cantidad de comida inicial.
+			
+			while (simPtr->blobNum && myGUI.isGameFinished())	//acá habría que hacer algún loop con alguna función de la GUI supongo pero no sé cómo.
+			{
+				simPtr->tick++;
+				simPtr->getData();
+				simPtr->gameLoop();
+			}
+
+
+		}
+	}
+
+
+
+
+	//objetoGraph
+	//Llamo GUI inicio
+	//parser
+	//initSim
+	//Dentro de Sim
+	//updateSim(Graph)
+	//
+
 
 	/*tick=0 inicializar simulación(dubujar blobs, comida, etc.)
 	tick=1
@@ -27,6 +49,7 @@ int main(void) {
 	7.blobBirth
 	8.restore food
 	9.++tick
+	10.Graficar
 
 	*/
 

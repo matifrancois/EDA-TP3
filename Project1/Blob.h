@@ -49,6 +49,7 @@ public:
 	/*Setters*/
 	void setX(double a);
 	void setY(double b);
+	void setRadius(double r);
 	void setMaxSpeed(double s);
 	void setAlphaSpeed(double s);
 	void setDir(double k);
