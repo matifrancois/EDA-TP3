@@ -57,6 +57,9 @@
     <ClInclude Include="imgui_impl_allegro5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Blob.cpp">
@@ -101,8 +104,31 @@
     <ClCompile Include="imgui_impl_allegro5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="babyblob.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="background.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="food.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="goodoldblob.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="grownblob.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
