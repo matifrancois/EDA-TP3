@@ -4,7 +4,7 @@
 Simulation::Simulation()
 {
 	maxX = WIDTH ;
-	maxY = HEIGHT;
+	maxY = TAMANIO_PANTALLA_Y;
 	foodNum = 0.0;
 	alphaSpeed = 0.0;
 	smellRadius = 0.0;
@@ -38,7 +38,6 @@ bool Simulation::generateFood(int newFood)
 
 bool Simulation::generateBlobs(int blobNum)
 {
-	int random;
 	bool result = true;
 	double maxSpeed_;
 	for (int i = 0; i < blobNum; i++)
@@ -49,19 +48,7 @@ bool Simulation::generateBlobs(int blobNum)
 		else {
 			maxSpeed_ = randBetweenReal(0.0, maxSpeed);
 		}
-		
-		random = rand() % 3 + 1;
-		switch (random) {
-
-		case 1:blobPtr[i] = new (nothrow) BabyBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, babyDeathProb);
-			break;
-
-		case 2:blobPtr[i] = new (nothrow) GrownBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, grownDeathProb);
-			break;
-		case 3:blobPtr[i] = new (nothrow) GoodOldBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, goodDeathProb);
-			break;
-		}
-		
+		blobPtr[i] = new (nothrow) BabyBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, babyDeathProb);
 		if (blobPtr[i] == nullptr)
 		{
 			result = false;
@@ -76,7 +63,7 @@ bool Simulation::generateBlobs(int blobNum)
 void Simulation::firstData(Graph& myGUI)
 {
 	maxX = TAMANIO_PANTALLA_X;			//Se complete los valores iniciales en la simulación
-	maxY =TAMANIO_PANTALLA_Y-BACKG_Y;
+	maxY = TAMANIO_PANTALLA_Y-BACKG_Y;
 	mode = myGUI.getModo();
 	blobNum = myGUI.getBlobNum();
 	foodNum = myGUI.getFoodCount();

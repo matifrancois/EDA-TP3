@@ -16,7 +16,7 @@ int main(void) {
 			simPtr.generateBlobs(simPtr.blobNum);		//genero la cantidad de blobs iniciales
 			simPtr.generateFood(simPtr.foodNum);		//genero la cantidad de comida inicial.
 			
-			while (simPtr.blobNum || 1)	//acá habría que hacer algún loop con alguna función de la GUI supongo pero no sé cómo./&& myGUI.isGameFinished()
+			while (simPtr.blobNum && !myGUI.getClose())
 			{
 				//simPtr->tick++;
 				//simPtr->getData(myGUI);

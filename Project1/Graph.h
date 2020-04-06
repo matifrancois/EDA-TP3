@@ -18,15 +18,14 @@ public:
     Graph();
     int grafica(Simulation& mysim);
     void printBlobs(Simulation& mysim);
-    int get_info(void);
-    bool cerrar;
+    bool get_info(void);
+    bool getClose(void);
     int getModo(void);
     int getBlobNum(void);
     int getFoodCount(void);
     float getMaxSpeed(void);
     float getVelp(void);
     float getDead(int type);
-    
     float getSmellRadius(void);
     float getRJL(void);
 
@@ -53,7 +52,8 @@ private:
     int modo;
     float Vel_max;
     int cant_inicial_blobs;
-
+    bool cerrar;
+    bool close_window;
     bool show_another_window;
     ImVec4 clear_color;  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
     bool running;

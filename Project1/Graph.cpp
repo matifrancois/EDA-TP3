@@ -19,9 +19,10 @@ Graph::Graph() {
     running = true;
     running_inicio = true;
     cerrar = false;
+    close_window = false;
 }
 
-int Graph::get_info(void)
+bool Graph::get_info(void)
 {
     // Setup Allegro
     if (inicializa())
@@ -107,7 +108,7 @@ int Graph::get_info(void)
         al_flip_display();
     }
     clean(display_entrada);
-    return 0;
+    return cerrar;
 }
 
 
@@ -200,7 +201,10 @@ int Graph::grafica(Simulation& mysim)
         {
             ImGui_ImplAllegro5_ProcessEvent(&ev);
             if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            {
                 running = false;
+                close_window = true;
+            }
             if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE)
             {
                 ImGui_ImplAllegro5_InvalidateDeviceObjects();
@@ -243,7 +247,7 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
 
 
 
-    al_draw_scaled_bitmap(background, 0.0f, 0.0f, al_get_bitmap_width(background), al_get_bitmap_height(background), BACKG_X, BACKG_Y, TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y - BACKG_Y, 0);
+    al_draw_scaled_bitmap(background, 0.0f, 0.0f, al_get_bitmap_width(background), al_get_bitmap_height(background), BACKG_X, BACKG_Y, TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y , 0);
 
     int i;
 
@@ -501,6 +505,10 @@ int Graph::Ventanainicio(void)
 int Graph::getBlobNum(void) {
 
     return cant_inicial_blobs;
+}
+bool Graph::getClose(void) {
+
+    return close_window;
 }
 int Graph::getFoodCount(void) {
 
