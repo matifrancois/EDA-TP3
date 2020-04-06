@@ -17,7 +17,7 @@ Food::~Food()
 Food::Food(double maxX, double maxY)		//inicializa un objeto comida en una posición aleatoria dentro de los límites de juego.
 {
 	foodx = randBetweenReal(0.0, maxX);
-	foody = randBetweenReal(0.0, maxY)+250.0;
+	foody = randBetweenReal(MIN_PRINTABLE_POIN_Y, maxY);
 	foodRadius = FOODRADIUS;
 	isFoodEaten = false;
 }

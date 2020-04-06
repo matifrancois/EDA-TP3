@@ -108,7 +108,7 @@ void Simulation::getData(Graph& myGUI)	//Recupera los datos que haya modificado 
 	newFood = myGUI.getFoodCount();		//agrego o quito comida según corresponda.
 	if (newFood >= foodNum)
 	{
-		generateFood(newFood - foodNum);
+		addFood(newFood - foodNum);
 	}
 	if (newFood < foodNum)
 	{
