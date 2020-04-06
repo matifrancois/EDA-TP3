@@ -18,6 +18,7 @@ int main(void) {
 			
 			while (simPtr.blobNum && !myGUI.getClose())
 			{
+
 				//simPtr->tick++;
 				//simPtr->getData(myGUI);
 				//simPtr->gameLoop();

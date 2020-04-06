@@ -44,7 +44,7 @@ public:
 	/*Inicializar blobs y food*/
 	bool generateFood(int newFood);	//genera la cantidad de comida inicial
 	bool generateBlobs(int blobNum);	//genera los babyBlobs iniciales en posiciones aleatorias.
-
+	void Simulate(Graph& myGUI);
 	
 	/*Completar y recuperar datos*/
 	void firstData(Graph& myGUI);

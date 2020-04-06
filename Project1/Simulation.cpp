@@ -21,7 +21,14 @@ Simulation::Simulation()
 Simulation::~Simulation()
 {
 }
+void Simulation:: Simulate(Graph& myGUI) {
 
+	tick++;
+	getData(myGUI);                           //fijate que una de estas funciones hace q los blobs desaparezcan
+    gameLoop();
+
+
+}
 bool Simulation::generateFood(int newFood)
 {
 	bool res = true;
@@ -35,6 +42,7 @@ bool Simulation::generateFood(int newFood)
 	}
 	return res;
 }
+
 
 bool Simulation::generateBlobs(int blobNum)
 {

@@ -5,7 +5,7 @@
 DEFINE
 **********************************/
 #define GROWNMAXFOOD 4
-#define GROWNRADIUS 1
+#define GROWNRADIUS 22.5
 
 /**********************************
 CLASS

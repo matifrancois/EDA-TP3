@@ -5,7 +5,7 @@
 DEFINE
 **********************************/
 #define BABYMAXFOOD 5
-#define BABYRADIUS 1
+#define BABYRADIUS 20
 
 /**********************************
 CLASS

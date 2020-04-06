@@ -5,7 +5,7 @@
 DEFINE
 **********************************/
 #define GOODOLDMAXFOOD 3
-#define GOODOLDRADIUS 3
+#define GOODOLDRADIUS 40.0
 
 /**********************************
 CLASS

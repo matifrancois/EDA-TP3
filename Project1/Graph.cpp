@@ -228,10 +228,10 @@ int Graph::grafica(Simulation& mysim)
         ImGui::Render();
         al_clear_to_color(al_map_rgba_f(clear_color.x, clear_color.y, clear_color.z, clear_color.w));   //no hago al_clear asi puedo dibujar 
         
-        mysim.tick++;
-        mysim.getData(*(this));                           //fijate que una de estas funciones hace q los blobs desaparezcan
-        mysim.gameLoop();
-        
+       // mysim.tick++;
+        //mysim.getData(*(this));                           //fijate que una de estas funciones hace q los blobs desaparezcan
+        //mysim.gameLoop();
+        mysim.Simulate(*(this));
         Graph::printBlobs(mysim);     //funcion que dibuja blobs,back y comida
 
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
@@ -258,7 +258,7 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
     for (i = 0; i < mysim.blobNum; i++) {
 
         posX = mysim.blobPtr[i]->getX();
-        posY = mysim.blobPtr[i]->getY();
+        posY = mysim.blobPtr[i]->getY() +BACKG_Y;
         posX > TAMANIO_PANTALLA_X ? posX = 0.0f : posX = posX;
         posX < 0 ? posX = TAMANIO_PANTALLA_X : posX = posX;
 
@@ -335,7 +335,7 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
     for (i = 0; i < mysim.foodNum; i++)
     {
         posX = mysim.foodPtr[i]->getFoodPosX();
-        posY = mysim.foodPtr[i]->getFoodPosY();
+        posY = mysim.foodPtr[i]->getFoodPosY()+BACKG_Y;
        
         al_draw_bitmap(food, posX, posY, 0);
         if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(food)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(food))) {
@@ -355,8 +355,7 @@ void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a fo
         }
         
     }
-
-
+    
 }
 
 int Graph::inicializa(void)
@@ -479,7 +478,7 @@ int Graph::Ventanainicio(void)
     Pregunta("En el Modo 1 los blobs comparten la misma velocidad. \nEn el modo 2, cada blob tiene una velocidad máxima distinta aleatoria entre 0 y el valor maximo. \nTodas comparten la velocidad porcentual");
     modo = std::stoi(item_current);
     ImGui::Text("Inserte Velocidad Maxima");
-    ImGui::DragFloat("pixeles/segundo", &Vel_max, 0.05, 0, 1000000);
+    ImGui::DragFloat("pixeles/tick", &Vel_max, 0.005, 0.0001, 10);
     Pregunta("Luego podra modificar la velocidad deseada para los Blobs desde los ajustes en la simulacion");
     ImGui::Text("Cantidad Inicial de Blobs");
     ImGui::DragInt("BabyBlobs", &cant_inicial_blobs, 0.03, 0, 1000000);
