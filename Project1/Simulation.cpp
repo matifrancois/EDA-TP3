@@ -96,17 +96,18 @@ void Simulation::getData(Graph& myGUI)	//Recupera los datos que haya modificado 
 	{
 		if ((blobPtr[i]->getGroup()) == BABYGROUP)		//primero seteo la probabilidad de muerte según grupo etario.
 		{
-			blobPtr[i]->setDeathStatus(myGUI.getDead(0));
+			blobPtr[i]->setDeadProb(myGUI.getDead(0));
 		}
 
 		if ((blobPtr[i]->getGroup()) == GROWNGROUP)
 		{
-			blobPtr[i]->setDeathStatus(myGUI.getDead(1));
+			blobPtr[i]->setDeadProb(myGUI.getDead(1));
+
 		}
 
 		if ((blobPtr[i]->getGroup()) == GOODOLDGROUP)
 		{
-			blobPtr[i]->setDeathStatus(myGUI.getDead(2));
+			blobPtr[i]->setDeadProb(myGUI.getDead(2));
 		}
 
 		if (mode == 1) {							//ajusto la velocidad máxima según modo de juego.
@@ -130,6 +131,10 @@ void Simulation::getData(Graph& myGUI)	//Recupera los datos que haya modificado 
 	{
 		delFood(foodNum - newFood);
 	}
+
+	babyDeathProb = myGUI.getDead(0);	//Ajusto los parámetros dead en la simulación.
+	grownDeathProb = myGUI.getDead(1);
+	goodDeathProb = myGUI.getDead(2);
 }
 
 

@@ -165,6 +165,11 @@ void Blob::setNewDir(double d)
 	newdir = d;
 }
 
+void Blob::setDeadProb(double j)
+{
+	deathProb = j;
+}
+
 void Blob::setFoodEaten(int f)
 {
 	foodEaten = f;

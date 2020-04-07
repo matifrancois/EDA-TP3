@@ -54,6 +54,7 @@ public:
 	void setAlphaSpeed(double s);
 	void setDir(double k);
 	void setNewDir(double d);
+	void setDeadProb(double j);
 	void setFoodEaten(int f);
 	void setFullness(bool x);
 	void setGroup(int g);
