@@ -17,7 +17,7 @@ Blob(double maxX, double maxY, double maxSpeed_, double alphaSpeed_, double radi
 	speed = maxSpeed_*alphaSpeed_/100.0;
 	newx = 0.0;
 	newy = 0.0;
-	newdir = 0.0;
+	newdir = randomDir();
 	foodEaten = 0;
 	group = 1;
 	colissionRadius = 0.0;
