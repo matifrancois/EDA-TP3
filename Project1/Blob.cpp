@@ -14,7 +14,7 @@ Blob(double maxX, double maxY, double maxSpeed_, double alphaSpeed_, double radi
 	radius = radius_;
 	maxSpeed =maxSpeed_;
 	alphaSpeed = alphaSpeed_;
-	speed = maxSpeed_*alphaSpeed_;
+	speed = maxSpeed_*alphaSpeed_/100.0;
 	newx = 0.0;
 	newy = 0.0;
 	newdir = 0.0;

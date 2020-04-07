@@ -52,10 +52,12 @@ bool Simulation::generateBlobs(int blobNum)
 	double maxSpeed_;
 	for (int i = 0; i < blobNum; i++)
 	{
-		if (mode == 1) {
+		if (mode == 1) 
+		{
 			maxSpeed_ = maxSpeed;
 		}
-		else {
+		else 
+		{
 			maxSpeed_ = randBetweenReal(0.0, maxSpeed);
 		}
 		blobPtr[i] = new (nothrow) BabyBlob(maxX, maxY, maxSpeed_, alphaSpeed, smellRadius, babyDeathProb);

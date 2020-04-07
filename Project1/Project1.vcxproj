@@ -151,11 +151,9 @@
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_allegro5.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
-    <ClCompile Include="main1.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="prototype.cpp" />
-    <ClCompile Include="main2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

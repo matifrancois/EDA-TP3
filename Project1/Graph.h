@@ -69,6 +69,6 @@ private:
     void VentanaPrincipal(void);
     void Pregunta(char* texto_ingresado);
     void clean(ALLEGRO_DISPLAY* ventana_a_borrar);
-    int Ventanainicio(void);
+    bool Ventanainicio(void);
 };
 

@@ -68,8 +68,6 @@ bool Graph::get_info(void)
     //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer bindings
-
-
     ImGui_ImplAllegro5_Init(display_entrada);
 
     while (running_inicio)
@@ -78,7 +76,7 @@ bool Graph::get_info(void)
         {
             ImGui_ImplAllegro5_ProcessEvent(&ev);
             if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-            { 
+            {
                 running_inicio = false;
                 cerrar = true;
             }
@@ -97,18 +95,16 @@ bool Graph::get_info(void)
 
 
         //Esta funcion se encarga de generar la parte de los botones de la gui
-        if(Ventanainicio()==0)
+        if (Ventanainicio())
             running_inicio = false;
-
-
 
         // Rendering
         ImGui::Render();
-
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
+        //Mostramos en pantalla
         al_flip_display();
     }
-    clean(display_entrada);
+    clean(display_entrada); //liberamos memoria utilizada
     return cerrar;
 }
 
@@ -213,6 +209,8 @@ int Graph::grafica(Simulation& mysim)
                 ImGui_ImplAllegro5_CreateDeviceObjects();
             }
         }
+
+
         // Start the Dear ImGui frame
         ImGui_ImplAllegro5_NewFrame();
         ImGui::NewFrame();
@@ -467,9 +465,9 @@ void Graph::Pregunta(char* texto_ingresado)
 }
 
 
-int Graph::Ventanainicio(void)
+bool Graph::Ventanainicio(void)
 {
-    int todo_ok = 1;
+    bool todo_ok = false;
     ImGuiWindowFlags window_flag = 0;
     window_flag |= ImGuiWindowFlags_NoResize;
     window_flag |= ImGuiWindowFlags_NoCollapse;
@@ -502,7 +500,7 @@ int Graph::Ventanainicio(void)
     Pregunta("Este parametro refiere a la cantidad de comida que existira en todo momento en la simulacion, tranquilo, a este parametro podes modificarlo mas tarde");
     ImGui::Text("");
     if (ImGui::Button("Ok a simular"))                           // Buttons return true when clicked (most widgets return true when edited/activated)
-        todo_ok = 0;
+        todo_ok = true;
     ImGui::End();
     return todo_ok;
 

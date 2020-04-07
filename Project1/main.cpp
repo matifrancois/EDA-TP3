@@ -12,7 +12,7 @@ int main(void) {
 		if (!(myGUI.get_info()))
 		{
 
-			simPtr.firstData(myGUI);	//Recupero los primeros datos (necesarios para iniciar las cosas invariantes)
+			simPtr.firstData(myGUI);					//Recupero los primeros datos (necesarios para iniciar las cosas invariantes)
 			simPtr.generateBlobs(simPtr.blobNum);		//genero la cantidad de blobs iniciales
 			simPtr.generateFood(simPtr.foodNum);		//genero la cantidad de comida inicial.
 			
