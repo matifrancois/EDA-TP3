@@ -13,7 +13,7 @@ class Graph;
 /**********************************
 DEFINE
 **********************************/
-#define MAXBLOBS 1000
+#define MAXBLOBS 10000
 #define MAXFOOD 1000
 #define COUNT 100	//Indica la cantidad de ciclos hasta que se active blobdeath.
 
@@ -26,7 +26,6 @@ DEFINE
 #define default_foodNum 0
 #define default_smellRadius 0.0
 #define defaultMode 1
-#define defaultFPS 11.0
 #define default_deathProb 0.0
 #define default_randomJiggleLimit 0
 #define default_deathProb 0.0
