@@ -47,8 +47,8 @@ public:
 	void Simulate(Graph& myGUI);
 	
 	/*Completar y recuperar datos*/
-	void firstData(Graph& myGUI);
-	void getData(Graph& myGUI);
+	void firstData(Graph& myGUI);	//Recupera los datos de inicio del juego
+	void getData(Graph& myGUI);		//Recupera los datos para el nuevo ciclo.
 										
 										
 	/*Revisar nacimientos y muertes*/

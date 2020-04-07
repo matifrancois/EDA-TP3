@@ -90,6 +90,7 @@ void Simulation::firstData(Graph& myGUI)
 void Simulation::getData(Graph& myGUI)	//Recupera los datos que haya modificado el usuario.
 {
 	int newFood = 0;
+	double maxSpeed_;
 
 	for (int i = 0; i < blobNum; i++)
 	{
@@ -108,8 +109,15 @@ void Simulation::getData(Graph& myGUI)	//Recupera los datos que haya modificado 
 			blobPtr[i]->setDeathStatus(myGUI.getDead(2));
 		}
 
-		blobPtr[i]->setMaxSpeed(myGUI.getMaxSpeed());		//ajusto la velocidad máxima, la porcentual, y smellRadius
-		blobPtr[i]->setAlphaSpeed(myGUI.getVelp());
+		if (mode == 1) {							//ajusto la velocidad máxima según modo de juego.
+			maxSpeed_ = myGUI.getMaxSpeed();
+		}
+		else {
+			maxSpeed_ = randBetweenReal(0.0, myGUI.getMaxSpeed());
+		}
+
+		blobPtr[i]->setMaxSpeed(maxSpeed_);			//Actualizo velocidad máxima
+		blobPtr[i]->setAlphaSpeed(myGUI.getVelp());		//Ajusta velocidad porcentual y smellRadius.
 		blobPtr[i]->setRadius(myGUI.getSmellRadius());
 	}
 
