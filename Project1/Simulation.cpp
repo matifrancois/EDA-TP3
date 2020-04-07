@@ -14,6 +14,7 @@ Simulation::Simulation()
 	goodDeathProb =0.0 ;
 	mode = 0;
 	blobNum = 0;
+	bellToll = COUNT;
 	tick = 0;
 }
 
@@ -25,6 +26,7 @@ Simulation::~Simulation()
 void Simulation:: Simulate(Graph& myGUI) 
 {
 	tick++;
+	bellToll--;
 	getData(myGUI);                           //fijate que una de estas funciones hace q los blobs desaparezcan
     gameLoop();
 }
@@ -287,10 +289,12 @@ void Simulation::delFood(int total)
 void Simulation::gameLoop(void)	//Ciclo de juego
 {
 	int i = 0;
-	//Revisa si algún blob debe morir por el fenómeno de blobDeath (inicia en tick=5 para dar tiempo a formación de blobs)
-	if (tick >= 5)
+	
+	//Revisa si algún blob debe morir por el fenómeno de blobDeath. Sólo se usa cada 100 'ticks'.
+	if (bellToll==0)
 	{
 		blobDeath();
+		bellToll = COUNT;
 	}	
 
 	//Cada blob busca la comida más cercana y actualiza su dirección, pero No se mueve.

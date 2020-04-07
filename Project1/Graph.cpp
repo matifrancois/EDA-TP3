@@ -225,7 +225,7 @@ int Graph::grafica(Simulation& mysim)
         ImGui::Render();
         
        // mysim.tick++;
-        //mysim.getData(*(this));                           //fijate que una de estas funciones hace q los blobs desaparezcan
+        //mysim.getData(*(this));                           
         //mysim.gameLoop();
         mysim.Simulate(*(this));
         Graph::printBlobs(mysim);     //funcion que dibuja blobs,back y comida
@@ -239,7 +239,7 @@ int Graph::grafica(Simulation& mysim)
     return 0;
 }
 
-void Graph::printBlobs(Simulation& mysim) {    //deberia recibir el puntero a food con distintas posiciones
+void Graph::printBlobs(Simulation& mysim) {    
 
 
 

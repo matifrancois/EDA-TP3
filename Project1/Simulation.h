@@ -15,6 +15,7 @@ DEFINE
 **********************************/
 #define MAXBLOBS 1000
 #define MAXFOOD 1000
+#define COUNT 100	//Indica la cantidad de ciclos hasta que se active blobdeath.
 
 #define default_maxX 1000.0
 #define default_maxY 500.0
@@ -82,6 +83,7 @@ public:
 	double alphaSpeed;
 	double randomJiggleLimit;
 	double smellRadius;
+	int bellToll;
 
 };
 
