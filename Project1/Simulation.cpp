@@ -14,21 +14,21 @@ Simulation::Simulation()
 	goodDeathProb =0.0 ;
 	mode = 0;
 	blobNum = 0;
+	tick = 0;
 }
-
 
 
 Simulation::~Simulation()
 {
 }
-void Simulation:: Simulate(Graph& myGUI) {
 
+void Simulation:: Simulate(Graph& myGUI) 
+{
 	tick++;
 	getData(myGUI);                           //fijate que una de estas funciones hace q los blobs desaparezcan
     gameLoop();
-
-
 }
+
 bool Simulation::generateFood(int newFood)
 {
 	bool res = true;
@@ -191,7 +191,7 @@ void Simulation::blobMerge(void)
 				if ((blobPtr[i]->getGroup()) == (blobPtr[j]->getGroup()))	//revisa que los blobs sean del mismo grupo etario
 				{
 					distance = getDistance(blobPtr[i]->getX(), blobPtr[j]->getX(), blobPtr[i]->getY(), blobPtr[j]->getY());
-					if (distance < ((blobPtr[i]->getcolissionRadius()) / 2.0))
+					if (distance < ((blobPtr[i]->getcolissionRadius()) * 2.0))
 					{					
 						blobPtr[i]->setDir((blobPtr[i]->getDir()) + (blobPtr[j]->getDir()));	//la idea es agrupar los datos del nuevo Blob en blob[i] para luego generarlo.
 						blobPtr[i]->setMaxSpeed((blobPtr[i]->getMaxSpeed()) + (blobPtr[j]->getMaxSpeed()));	//se agrupan dirección, velocidad máxmima, y velocidad relativa.

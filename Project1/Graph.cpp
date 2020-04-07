@@ -10,12 +10,13 @@ Graph::Graph() {
     smellRadius = SMELLRADIUS_INICIAL;
     foodCount = FOOD_COUNT_INICIAL;
     randomJiggleLimit = DIR_INICIAL;
+    Vel_max = INIC_VEL;
+    cant_inicial_blobs = INIC_BLOBS;
     display_principal = NULL;
     queue = NULL;
     close_display = false;
     show_demo_window = false;
     show_another_window = false;
-    clear_color = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
     running = true;
     running_inicio = true;
     cerrar = false;
@@ -217,16 +218,11 @@ int Graph::grafica(Simulation& mysim)
         ImGui::NewFrame();
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 
-
-
         //Esta funcion se encarga de generar la parte de los botones de la gui
         VentanaPrincipal();
 
-        
-
         // Rendering
         ImGui::Render();
-        al_clear_to_color(al_map_rgba_f(clear_color.x, clear_color.y, clear_color.z, clear_color.w));   //no hago al_clear asi puedo dibujar 
         
        // mysim.tick++;
         //mysim.getData(*(this));                           //fijate que una de estas funciones hace q los blobs desaparezcan
@@ -478,7 +474,7 @@ int Graph::Ventanainicio(void)
     Pregunta("En el Modo 1 los blobs comparten la misma velocidad. \nEn el modo 2, cada blob tiene una velocidad máxima distinta aleatoria entre 0 y el valor maximo. \nTodas comparten la velocidad porcentual");
     modo = std::stoi(item_current);
     ImGui::Text("Inserte Velocidad Maxima");
-    ImGui::DragFloat("pixeles/tick", &Vel_max, 0.005, 0.0001, 10);
+    ImGui::DragFloat("pixeles/tick", &Vel_max, 0.0005, 0.0001, 0.1);
     Pregunta("Luego podra modificar la velocidad deseada para los Blobs desde los ajustes en la simulacion");
     ImGui::Text("Cantidad Inicial de Blobs");
     ImGui::DragInt("BabyBlobs", &cant_inicial_blobs, 0.03, 0, 1000000);
