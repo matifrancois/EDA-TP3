@@ -521,7 +521,7 @@ void Graph::VentanaPrincipal(void)
     ImGui::Text("Cantidad = %d", foodCount);
     Pregunta("Cantidad de comida que sera visible en pantalla y podran atrapar los Blobs");
 
-    ImGui::End()
+    ImGui::End();
 }
 
 

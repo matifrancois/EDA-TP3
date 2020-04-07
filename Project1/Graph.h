@@ -18,7 +18,6 @@ class Simulation;
 class Graph
 {
 public:
-
     Graph();
     int grafica(Simulation& mysim);
     void printBlobs(Simulation& mysim);
@@ -38,9 +37,7 @@ private:
     int inicializa(void);
     ALLEGRO_DISPLAY* display_principal;
     ALLEGRO_DISPLAY* display_entrada;
-
     ALLEGRO_SAMPLE* select_sample;
-
     ALLEGRO_BITMAP* background;
     ALLEGRO_BITMAP* babyBlob;
     ALLEGRO_BITMAP* food;
@@ -49,7 +46,6 @@ private:
     //crea el evento
     ALLEGRO_EVENT_QUEUE* queue;
     bool close_display;
-    //con estos se controla el abrir o cerrar una ventana y el checkbox si esta o no marcado
     bool show_demo_window;
     float Death[3];
     float velp;
@@ -62,7 +58,6 @@ private:
     bool cerrar;
     bool close_window;
     bool show_another_window;
-    ImVec4 clear_color;  //creamos un vector de cuatro dimensiones para el color del fondo a utilizar.
     bool running;
     bool running_inicio;
     ALLEGRO_EVENT ev;
