@@ -173,6 +173,7 @@ int Graph::grafica(Simulation& mysim)
 {
     // Intenta crear display 
     display_principal = al_create_display(TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y);
+    //al_set_window_position(display_principal, 0, 0);
     if (!display_principal)
     {
         fprintf(stderr, " failed to create display !\n");
@@ -305,7 +306,7 @@ void Graph::printBlobs(Simulation& mysim) {
         case BABYGROUP: al_draw_bitmap(babyBlob, posX, posY, 0);
             if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(babyBlob)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(babyBlob))) {
 
-                al_draw_bitmap_region(babyBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(babyBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(babyBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+                al_draw_bitmap_region(babyBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(babyBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(babyBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f,BACKG_Y, 0);
 
             }
             else if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(babyBlob))) {
@@ -315,7 +316,7 @@ void Graph::printBlobs(Simulation& mysim) {
             }
             else if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(babyBlob))) {
 
-                al_draw_bitmap_region(babyBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(babyBlob), al_get_bitmap_height(babyBlob) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
+                al_draw_bitmap_region(babyBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(babyBlob), al_get_bitmap_height(babyBlob) - (TAMANIO_PANTALLA_Y - posY), posX, BACKG_Y, 0);
 
             }
             break;
@@ -324,7 +325,7 @@ void Graph::printBlobs(Simulation& mysim) {
             if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(grownBlob)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(grownBlob))) {
 
 
-                al_draw_bitmap_region(grownBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(grownBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(grownBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+                al_draw_bitmap_region(grownBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(grownBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(grownBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, BACKG_Y, 0);
 
 
             }
@@ -335,7 +336,7 @@ void Graph::printBlobs(Simulation& mysim) {
             }
             else if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(grownBlob))) {
 
-                al_draw_bitmap_region(grownBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(grownBlob), al_get_bitmap_height(grownBlob) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
+                al_draw_bitmap_region(grownBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(grownBlob), al_get_bitmap_height(grownBlob) - (TAMANIO_PANTALLA_Y - posY), posX, BACKG_Y, 0);
 
             }
             break;
@@ -343,7 +344,7 @@ void Graph::printBlobs(Simulation& mysim) {
         case GOODOLDGROUP:al_draw_bitmap(goodOldBlob, posX, posY, 0);
             if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(goodOldBlob)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(goodOldBlob))) {
 
-                al_draw_bitmap_region(goodOldBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(goodOldBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(goodOldBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+                al_draw_bitmap_region(goodOldBlob, (TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(goodOldBlob) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(goodOldBlob) - (TAMANIO_PANTALLA_Y - posY), 0.0f, BACKG_Y, 0);
 
             }
             else if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(goodOldBlob))) {
@@ -353,7 +354,7 @@ void Graph::printBlobs(Simulation& mysim) {
             }
             else if (posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(goodOldBlob))) {
 
-                al_draw_bitmap_region(goodOldBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(goodOldBlob), al_get_bitmap_height(goodOldBlob) - (TAMANIO_PANTALLA_Y - posY), posX, 250.0f, 0);
+                al_draw_bitmap_region(goodOldBlob, 0.0f, (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(goodOldBlob), al_get_bitmap_height(goodOldBlob) - (TAMANIO_PANTALLA_Y - posY), posX, BACKG_Y, 0);
 
             }
             break;
@@ -373,7 +374,7 @@ void Graph::printBlobs(Simulation& mysim) {
         al_draw_bitmap(food, posX, posY, 0);
         if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(food)) && posY > (TAMANIO_PANTALLA_Y - al_get_bitmap_height(food))) {
 
-            al_draw_bitmap_region(food,(TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(food) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(food) - (TAMANIO_PANTALLA_Y - posY), 0.0f, 250.0f, 0);
+            al_draw_bitmap_region(food,(TAMANIO_PANTALLA_X - posX), (TAMANIO_PANTALLA_Y - posY), al_get_bitmap_width(food) - (TAMANIO_PANTALLA_X - posX), al_get_bitmap_height(food) - (TAMANIO_PANTALLA_Y - posY), 0.0f, BACKG_Y, 0);
 
         }
         else if (posX > (TAMANIO_PANTALLA_X - al_get_bitmap_width(food))) {
