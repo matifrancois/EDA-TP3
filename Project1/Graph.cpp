@@ -1,8 +1,8 @@
 #include "Graph.h"
 #include "simulation.h"
 
+//Constructor
 Graph::Graph() {
-
     Death[0] = PROBABILIDAD_MUERTE_BABY;
     Death[1] = PROBABILIDAD_MUERTE_GROWN;
     Death[2] = PROBABILIDAD_MUERTE_OLD;
@@ -23,6 +23,7 @@ Graph::Graph() {
     close_window = false;
 }
 
+
 bool Graph::get_info(void)
 {
     // Setup Allegro
@@ -32,7 +33,7 @@ bool Graph::get_info(void)
         return -1;
     }
 
-    // Intenta crear display de 640 x480 , de fallar devuelve NULL
+    // Crea el display
     display_entrada = al_create_display(TAMANIO_PANTALLA_X_ENTRADA, TAMANIO_PANTALLA_Y_ENTRADA);
     if (!display_entrada)
     {
@@ -42,34 +43,14 @@ bool Graph::get_info(void)
     al_set_window_title(display_entrada, "Inputs de datos");
     al_set_new_display_flags(ALLEGRO_RESIZABLE);
 
-    //cola de eventos
-    queue = al_create_event_queue();
-    // Controla que la cola de eventos se haya generado
-    if (!queue)
+
+    //crea cola de eventos y conecta al display entrada con la gui
+    if (seteo(display_entrada) == - 1)
     {
-        fprintf(stderr, " failed to create event_queue !\n");
-        al_destroy_display(display_entrada);
         return -1;
     }
 
-    //le indico al queue que eventos importan
-    al_register_event_source(queue, al_get_display_event_source(display_entrada));
-    al_register_event_source(queue, al_get_keyboard_event_source());
-    al_register_event_source(queue, al_get_mouse_event_source());
-
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
-
-    // Setup Platform/Renderer bindings
-    ImGui_ImplAllegro5_Init(display_entrada);
-
+    //siempre que no se haya tocado x
     while (running_inicio)
     {
         while (al_get_next_event(queue, &ev))
@@ -92,84 +73,82 @@ bool Graph::get_info(void)
         ImGui::NewFrame();
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 
-
-
         //Esta funcion se encarga de generar la parte de los botones de la gui
         if (Ventanainicio())
             running_inicio = false;
 
-        // Rendering
+        // Rendering de imgui
         ImGui::Render();
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
+
         //Mostramos en pantalla
         al_flip_display();
     }
-    clean(display_entrada); //liberamos memoria utilizada
+    //liberamos memoria utilizada
+    cleaner(display_entrada); 
     return cerrar;
 }
 
-
-
-int Graph::grafica(Simulation& mysim)
+// Primera funcion a llamar antes de empezar a usar allegro .
+int Graph::inicializa(void)
 {
-    // Setup Allegro
-    if (inicializa())
+    if (!al_init())
     {
-        printf("Error de inicializacion \n");
+        fprintf(stderr, " failed to initialize allegro !\n");
         return -1;
     }
-
-
-    // Intenta crear display de 640 x480 , de fallar devuelve NULL
-    display_principal = al_create_display(TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y);
-    if (!display_principal)
+    if (!al_install_mouse())
     {
-        fprintf(stderr, " failed to create display !\n");
+        fprintf(stderr, " failed to initialize the mouse !\n");
         return -1;
     }
-    al_set_window_title(display_principal, "Simulacion Blobeana"); 
-    al_set_new_display_flags(ALLEGRO_RESIZABLE);
+    if (!al_install_keyboard())
+    {
+        fprintf(stderr, " failed to initialize the keyboard !\n");
+        return -1;
+    }
+    if (!al_init_primitives_addon())
+    {
+        fprintf(stderr, " failed to initialize the primitives !\n");
+        return -1;
+    }
+    if (!al_init_image_addon()) {
 
-    //creo los bitmap
-    background = al_load_bitmap("background.jpg");
-    if (!background) {
-        fprintf(stderr, " failed to create display !\n");
+        fprintf(stderr, " failed to initialize the imageaddon !\n");
         return -1;
     }
-    babyBlob = al_load_bitmap("babyblob.png");
-    if (!babyBlob) {
-        fprintf(stderr, " failed to create display !\n");
+    if (!al_init_acodec_addon()) {
+
+        fprintf(stderr, " failed to initialize the imageaddon !\n");
         return -1;
     }
-    goodOldBlob = al_load_bitmap("goodoldblob.png");
-    if (!goodOldBlob) {
-        fprintf(stderr, " failed to create display !\n");
-        return -1;
+    // incializa el audio en allegro
+    if (!al_install_audio())
+    {
+        fprintf(stderr, "Could not init sound!\n");
+        return 1;
     }
-    grownBlob = al_load_bitmap("grownblob.png");
-    if (!grownBlob) {
-        fprintf(stderr, " failed to create display !\n");
-        return -1;
-    }
-    food = al_load_bitmap("food.png");
-    if (!food) {
-        fprintf(stderr, " failed to create display !\n");
-        return -1;
-    }
+    al_reserve_samples(1);
+    select_sample = al_load_sample("blob_merge.wav");
+    return 0;
+}
 
 
+int Graph::seteo(ALLEGRO_DISPLAY* display)
+{
     //cola de eventos
     queue = al_create_event_queue();
+
     // Controla que la cola de eventos se haya generado
     if (!queue)
     {
         fprintf(stderr, " failed to create event_queue !\n");
-        al_destroy_display(display_principal);
+        al_destroy_display(display);
         return -1;
     }
 
     //le indico al queue que eventos importan
-    al_register_event_source(queue, al_get_display_event_source(display_principal));
+    al_register_event_source(queue, al_get_display_event_source(display));
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_mouse_event_source());
 
@@ -184,14 +163,33 @@ int Graph::grafica(Simulation& mysim)
     //ImGui::StyleColorsClassic();
 
     // Setup Platform/Renderer bindings
+    ImGui_ImplAllegro5_Init(display);
+
+    return 0;
+}
 
 
-    ImGui_ImplAllegro5_Init(display_principal);
-   
-  
+int Graph::grafica(Simulation& mysim)
+{
+    // Intenta crear display 
+    display_principal = al_create_display(TAMANIO_PANTALLA_X, TAMANIO_PANTALLA_Y);
+    if (!display_principal)
+    {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    al_set_window_title(display_principal, "Simulacion Blobeana"); 
+    al_set_new_display_flags(ALLEGRO_RESIZABLE);
+
+    //creo los bitmap
+    if (carga_bitmaps()==-1)
+    {
+        return -1;
+    }
+    
+    seteo(display_principal);
 
     // Main loop
-   
     while (running)
     {
         while (al_get_next_event(queue, &ev))
@@ -240,6 +238,43 @@ int Graph::grafica(Simulation& mysim)
     clean(display_principal);
     return 0;
 }
+
+
+void Graph::Sound(void)
+{
+    al_play_sample(select_sample, 1, ALLEGRO_AUDIO_PAN_NONE, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+}
+
+
+int Graph::carga_bitmaps()
+{
+    background = al_load_bitmap("background.jpg");
+    if (!background) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    babyBlob = al_load_bitmap("babyblob.png");
+    if (!babyBlob) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    goodOldBlob = al_load_bitmap("goodoldblob.png");
+    if (!goodOldBlob) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    grownBlob = al_load_bitmap("grownblob.png");
+    if (!grownBlob) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+    food = al_load_bitmap("food.png");
+    if (!food) {
+        fprintf(stderr, " failed to create display !\n");
+        return -1;
+    }
+}
+
 
 void Graph::printBlobs(Simulation& mysim) {    
 
@@ -356,100 +391,31 @@ void Graph::printBlobs(Simulation& mysim) {
     
 }
 
-int Graph::inicializa(void)
-{
-    // Primera funcion a llamar antes de empezar a usar allegro .
-    if (!al_init())
-    {
-        fprintf(stderr, " failed to initialize allegro !\n");
-        return -1;
-    }
-    // Empieza todo lo del mouse lo inicializa
-    if (!al_install_mouse())
-    {
-        fprintf(stderr, " failed to initialize the mouse !\n");
-        return -1;
-    }
-    if (!al_install_keyboard())
-    {
-        fprintf(stderr, " failed to initialize the keyboard !\n");
-        return -1;
-    }
-    if (!al_init_primitives_addon())
-    {
-        fprintf(stderr, " failed to initialize the primitives !\n");
-        return -1;
-    }
-    if (!al_init_image_addon()) {
-       
-        fprintf(stderr, " failed to initialize the imageaddon !\n");
-        return -1;
-    }
-    al_init_acodec_addon();
-    // incializa el audio en allegro
-    if (!al_install_audio()) 
-    {
-        fprintf(stderr, "Could not init sound!\n");
-        return 1;
-    }
-    al_reserve_samples(1);
-    select_sample = al_load_sample("blob_merge.wav");
-    return 0;
-}
 
-void Graph::Sound(void)
-{
-    al_play_sample(select_sample, 1, ALLEGRO_AUDIO_PAN_NONE, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-}
-
-
-void Graph::VentanaPrincipal(void)
-{
-    ImGuiWindowFlags window_flag = 0;
-    window_flag |= ImGuiWindowFlags_NoResize;
-    window_flag |= ImGuiWindowFlags_NoCollapse;
-    ImGui::Begin("Parametros",NULL, window_flag);                          // Create a window called "Hello, world!" and append into it
-    ImGui::Text("Inserte Vel Porcentual ");               
-    ImGui::SliderFloat("%", &velp, 0.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-    Pregunta("Que porcentaje de la velocidad maxima utilizara en ese momento");
-    ImGui::Text("SmellRadius");
-    ImGui::InputFloat("", &smellRadius, 10.0f, 1.0f, "%.3f");
-    Pregunta("SmellRadius refiere a el radio en el cual el blob buscara su alimento, fuera de ese radio de deteccion no lo huele");
-    ImGui::Text("RandomJiggleLimit");
-    ImGui::SliderFloat("°", &randomJiggleLimit, 0.0f, 360.0f);
-    Pregunta("Al chocar 2 o mas blobs del mismo grupo etario la direccion del blob resultante es la suma de las direcciones mas un valor aleatorio entre 0 y este valor introducido");
-    ImGui::Text("Death %");
-    ImGui::SliderFloat3("", Death, 0.0f, 1.0f);
-    Pregunta("Cada valor corresponde a la probabilidad de muerte de cada grupo etario en el orden: BabyBlob, GrownBlob, GoodOldBlob");
-    ImGui::Text("Cantidad de Comida %");
-    if (ImGui::Button("Disminuir"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        if(foodCount>0)
-            foodCount--;
-    ImGui::SameLine();
-    if (ImGui::Button("Aumentar"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        foodCount++;
-    ImGui::SameLine();
-    ImGui::Text("Cantidad = %d", foodCount);
-    Pregunta("Cantidad de comida que sera visible en pantalla y podran atrapar los Blobs");
-
-    ImGui::End();
-
-    //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-    //ImGui::Checkbox("Another Window", &show_another_window);
-    //
-    //ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-}
-
-void Graph::clean(ALLEGRO_DISPLAY* ventana_a_borrar)
+void Graph::cleaner(ALLEGRO_DISPLAY* ventana_a_borrar)
 {
     ImGui_ImplAllegro5_Shutdown();
     ImGui::DestroyContext();
     al_destroy_event_queue(queue);
     al_destroy_display(ventana_a_borrar);
+}
+
+
+void Graph::clean(ALLEGRO_DISPLAY* ventana_a_borrar)
+{
+    al_destroy_bitmap(background);
+    al_destroy_bitmap(babyBlob);
+    al_destroy_bitmap(grownBlob);
+    al_destroy_bitmap(goodOldBlob);
+    al_destroy_bitmap(food);
+    ImGui_ImplAllegro5_Shutdown();
+    ImGui::DestroyContext();
+    al_destroy_display(ventana_a_borrar);
     al_shutdown_image_addon();
 }
 
+
+//La idea es crear el simbolo ? que aparece al costado de los widgets para seleccion
 void Graph::Pregunta(char* texto_ingresado)
 {
     ImGui::SameLine();
@@ -465,17 +431,24 @@ void Graph::Pregunta(char* texto_ingresado)
 }
 
 
+//configuramos la gui de la ventana de inicio
 bool Graph::Ventanainicio(void)
 {
-    bool todo_ok = false;
+    //Para indicarle al programa si ya se apreto el boton ok
+    bool todo_ok = false;   
+    
+    //los siguientes flags son para indicarle a imgui que no se debe poder mover ni cerrar los menus de gui
     ImGuiWindowFlags window_flag = 0;
     window_flag |= ImGuiWindowFlags_NoResize;
     window_flag |= ImGuiWindowFlags_NoCollapse;
-    ImGui::Begin("Ingrese los Parametros iniciales", NULL, window_flag);                          // Create a window called "Hello, world!" and append into it
+
+    ImGui::Begin("Ingrese los Parametros iniciales", NULL, window_flag);                         
+    
     ImGui::Text("Inserte Modo ");
+    //seteamos las opciones del combo del modo y lo creamos
     const char* items[] = { "1", "2" };
-    static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
-    if (ImGui::BeginCombo("<-", item_current, 0)) // the first parameter have to be there, the second parameter is the label previewed before opening the combo.
+    static const char* item_current = items[0];            
+    if (ImGui::BeginCombo("<-", item_current, 0)) 
     {
         for (int n = 0; n < IM_ARRAYSIZE(items); n++)
         {
@@ -483,33 +456,79 @@ bool Graph::Ventanainicio(void)
             if (ImGui::Selectable(items[n], is_selected))
                 item_current = items[n];
             if (is_selected)
-                ImGui::SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+                ImGui::SetItemDefaultFocus();  
         }
         ImGui::EndCombo();
     }
     Pregunta("En el Modo 1 los blobs comparten la misma velocidad. \nEn el modo 2, cada blob tiene una velocidad máxima distinta aleatoria entre 0 y el valor maximo. \nTodas comparten la velocidad porcentual");
-    modo = std::stoi(item_current);
+    modo = std::stoi(item_current);      //guardamos la variable modo como numero
+    
     ImGui::Text("Inserte Velocidad Maxima");
     ImGui::DragFloat("pixeles/tick", &Vel_max, 0.0005, 0.0001, 0.1);
     Pregunta("Luego podra modificar la velocidad deseada para los Blobs desde los ajustes en la simulacion");
+    
     ImGui::Text("Cantidad Inicial de Blobs");
     ImGui::DragInt("BabyBlobs", &cant_inicial_blobs, 0.03, 0, 1000000);
     Pregunta("La simulacion inicia con la cantidad deseada de babyBlobs configurada con este parametro");
+    
     ImGui::Text("Cantidad de Comida Inicial");
     ImGui::DragInt("Comidas", &foodCount, 0.03, 0, 1000000);
     Pregunta("Este parametro refiere a la cantidad de comida que existira en todo momento en la simulacion, tranquilo, a este parametro podes modificarlo mas tarde");
+    
     ImGui::Text("");
-    if (ImGui::Button("Ok a simular"))                           // Buttons return true when clicked (most widgets return true when edited/activated)
+    if (ImGui::Button("Ok a simular"))                           
         todo_ok = true;
+    
     ImGui::End();
     return todo_ok;
+}
 
-    //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-    //ImGui::Checkbox("Another Window", &show_another_window);
-    //
-    //ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
-}int Graph:: getModo(void) {            //GETTERS
+//configuramos la gui de la ventana principal
+void Graph::VentanaPrincipal(void)
+{
+    //los siguientes flags son para indicarle a imgui que no se debe poder mover ni cerrar los menus de gui
+    ImGuiWindowFlags window_flag = 0;
+    window_flag |= ImGuiWindowFlags_NoResize;
+    window_flag |= ImGuiWindowFlags_NoCollapse;
+    
+    ImGui::Begin("Parametros", NULL, window_flag);
+
+    ImGui::Text("Inserte Vel Porcentual ");
+    ImGui::SliderFloat("%", &velp, 0.0f, 100.0f);            
+    Pregunta("Que porcentaje de la velocidad maxima utilizara en ese momento");
+    
+    ImGui::Text("SmellRadius");
+    ImGui::InputFloat("", &smellRadius, 10.0f, 1.0f, "%.3f");
+    Pregunta("SmellRadius refiere a el radio en el cual el blob buscara su alimento, fuera de ese radio de deteccion no lo huele");
+    
+    ImGui::Text("RandomJiggleLimit");
+    ImGui::SliderFloat("°", &randomJiggleLimit, 0.0f, 360.0f);
+    Pregunta("Al chocar 2 o mas blobs del mismo grupo etario la direccion del blob resultante es la suma de las direcciones mas un valor aleatorio entre 0 y este valor introducido");
+    
+    ImGui::Text("Death %");
+    ImGui::SliderFloat3("", Death, 0.0f, 1.0f);
+    Pregunta("Cada valor corresponde a la probabilidad de muerte de cada grupo etario en el orden: BabyBlob, GrownBlob, GoodOldBlob");
+    
+    ImGui::Text("Cantidad de Comida %");
+    if (ImGui::Button("Disminuir"))                           
+        if (foodCount > 0)
+            foodCount--;
+    ImGui::SameLine();
+    if (ImGui::Button("Aumentar"))                           
+        foodCount++;
+    ImGui::SameLine();
+    ImGui::Text("Cantidad = %d", foodCount);
+    Pregunta("Cantidad de comida que sera visible en pantalla y podran atrapar los Blobs");
+
+    ImGui::End()
+}
+
+
+//GETTERS
+
+
+int Graph:: getModo(void) {            
 
     return modo;
 }

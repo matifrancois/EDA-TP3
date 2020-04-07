@@ -16,9 +16,13 @@ int main(void) {
 			simPtr.generateBlobs(simPtr.blobNum);		//genero la cantidad de blobs iniciales
 			simPtr.generateFood(simPtr.foodNum);		//genero la cantidad de comida inicial.
 			
-			while (simPtr.blobNum && !myGUI.getClose())
+			while (simPtr.blobNum && !myGUI.getClose())  //siempre que exista algun blob y que no se haya cerrado la pestaña
 			{
-				myGUI.grafica(simPtr);
+				if (myGUI.grafica(simPtr) == -1)		// si la funcion grafica devuelve -1 entonce hubo un error dentro de ella
+				{
+					printf("Error");
+					return -1;
+				}
 			}
 
 

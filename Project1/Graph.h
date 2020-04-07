@@ -67,7 +67,10 @@ private:
     bool running_inicio;
     ALLEGRO_EVENT ev;
     void VentanaPrincipal(void);
+    int seteo(ALLEGRO_DISPLAY* display);
+    int carga_bitmaps(void);
     void Pregunta(char* texto_ingresado);
+    void cleaner(ALLEGRO_DISPLAY* ventana_a_borrar);
     void clean(ALLEGRO_DISPLAY* ventana_a_borrar);
     bool Ventanainicio(void);
 };
