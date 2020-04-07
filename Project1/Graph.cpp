@@ -415,7 +415,7 @@ void Graph::VentanaPrincipal(void)
     ImGui::SliderFloat("%", &velp, 0.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
     Pregunta("Que porcentaje de la velocidad maxima utilizara en ese momento");
     ImGui::Text("SmellRadius");
-    ImGui::InputFloat("", &smellRadius, 0.01f, 1.0f, "%.3f");
+    ImGui::InputFloat("", &smellRadius, 10.0f, 1.0f, "%.3f");
     Pregunta("SmellRadius refiere a el radio en el cual el blob buscara su alimento, fuera de ese radio de deteccion no lo huele");
     ImGui::Text("RandomJiggleLimit");
     ImGui::SliderFloat("°", &randomJiggleLimit, 0.0f, 360.0f);
