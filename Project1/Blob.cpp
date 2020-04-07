@@ -283,15 +283,7 @@ void Blob::check_for_food(Food **foodPtr, int foodNum)	//revisa si hay comida ce
 	{
 		double angle = atan2(closest_y - getY(), closest_x - getX());
 		
-		if (closest_x < getX() && closest_y < getY() || (closest_x < getX() && closest_y > getY())) {
-			
-			angle +=PI; 
-		}
-		else if (closest_x > getX() && closest_y < getY()) {
-
-			angle += (2 * PI);
-		}
-
+		
 
 		setNewDir(angle);	
 	}
