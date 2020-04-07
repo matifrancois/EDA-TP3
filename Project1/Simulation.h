@@ -71,6 +71,7 @@ public:
 	Blob *blobPtr[MAXBLOBS];	//contiene los punteros a los distintos blobs en el tablero.
 	Food *foodPtr[MAXFOOD];		//contiene los punteros a las distintas comidas en el juego.
 	int blobNum;
+	int sound;
 	int foodNum;
 	int mode;
 	int tick;

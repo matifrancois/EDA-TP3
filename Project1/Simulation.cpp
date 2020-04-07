@@ -187,6 +187,7 @@ void Simulation::clearBlob(int i)
 
 void Simulation::blobMerge(void)
 {
+	sound = NOT_SOUND;
 	double addRandom, distance;
 	int totalMerges = 0;			//cantidad de merges para luego calcular el promedio de la dirección y velocidad.
 	for (int i = 0; i < blobNum; i++)
@@ -211,6 +212,7 @@ void Simulation::blobMerge(void)
 			}
 			if (totalMerges > 0) //si hubo algún merge se calcula la dirección y velocidad del nuevo blob.
 			{
+				sound = MUST_SOUND;
 				addRandom = randBetweenReal(0.0, randomJiggleLimit);	//genero el ángulo aleatorio con JiggleLimit
 				addRandom = ((addRandom*PI) / 180);						//lo convierto a radianes.
 				blobPtr[i]->setDir(((blobPtr[i]->getDir()) / totalMerges) + addRandom);	//se genera la nueva dirección haciendo el promedio y luego sumándole randomJiggleLimit;

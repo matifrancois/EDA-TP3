@@ -228,6 +228,10 @@ int Graph::grafica(Simulation& mysim)
         //mysim.getData(*(this));                           
         //mysim.gameLoop();
         mysim.Simulate(*(this));
+        if (mysim.sound == MUST_SOUND)
+        {
+            Graph::Sound();
+        }
         Graph::printBlobs(mysim);     //funcion que dibuja blobs,back y comida
 
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
@@ -383,7 +387,21 @@ int Graph::inicializa(void)
         fprintf(stderr, " failed to initialize the imageaddon !\n");
         return -1;
     }
+    al_init_acodec_addon();
+    // incializa el audio en allegro
+    if (!al_install_audio()) 
+    {
+        fprintf(stderr, "Could not init sound!\n");
+        return 1;
+    }
+    al_reserve_samples(1);
+    select_sample = al_load_sample("blob_merge.wav");
     return 0;
+}
+
+void Graph::Sound(void)
+{
+    al_play_sample(select_sample, 1, ALLEGRO_AUDIO_PAN_NONE, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 }
 
 

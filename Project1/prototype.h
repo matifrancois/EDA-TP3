@@ -30,6 +30,8 @@ DEFINE
 #define BACKG_X 0.0f
 #define INIC_VEL 0.02
 #define INIC_BLOBS 3
+#define MUST_SOUND 1
+#define NOT_SOUND 0
 
 typedef unsigned int uint;
 

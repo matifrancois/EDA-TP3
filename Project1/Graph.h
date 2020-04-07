@@ -8,6 +8,10 @@
 #include "imgui.h"
 #include "imgui_impl_allegro5.h"
 #include "prototype.h"
+
+#include "allegro5/allegro_audio.h"
+#include "allegro5/allegro_acodec.h"
+
 #include <string>
 class Simulation;
 
@@ -18,6 +22,7 @@ public:
     Graph();
     int grafica(Simulation& mysim);
     void printBlobs(Simulation& mysim);
+    void Sound(void);
     bool get_info(void);
     bool getClose(void);
     int getModo(void);
@@ -33,6 +38,8 @@ private:
     int inicializa(void);
     ALLEGRO_DISPLAY* display_principal;
     ALLEGRO_DISPLAY* display_entrada;
+
+    ALLEGRO_SAMPLE* select_sample;
 
     ALLEGRO_BITMAP* background;
     ALLEGRO_BITMAP* babyBlob;
