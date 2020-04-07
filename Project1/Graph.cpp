@@ -243,7 +243,7 @@ int Graph::grafica(Simulation& mysim)
 
 void Graph::Sound(void)
 {
-    al_play_sample(select_sample, 1, ALLEGRO_AUDIO_PAN_NONE, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+    al_play_sample(select_sample, 15, ALLEGRO_AUDIO_PAN_NONE, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 }
 
 
